@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:11,520
+Diese Lösung beginnt damit, das aktuelle Verzeichnis zu bestimmen und die aktive Benutzeridentität zu bestätigen. Beide Prüfungen verhindern, dass wir als falscher Benutzer am falschen Ort Änderungen vornehmen.
+
+2
+00:00:11,870 --> 00:00:29,790
+Im Posteingang liegen eine Willkommensnotiz und ein Entwurf. Mit mkdir -p und der Klammererweiterung erstellen wir die geforderte Projektstruktur; so entstehen beide Unterverzeichnisse mit einem einzigen, vorhersehbaren Befehl.
+
+3
+00:00:30,140 --> 00:00:42,740
+cp erhält die Willkommensdatei am ursprünglichen Ort, während mv den Entwurf ins Archiv verschiebt. Die vollständigen Zielpfade machen den beabsichtigten Endzustand eindeutig.
+
+4
+00:00:43,090 --> 00:00:57,370
+Abschließend weist find beide Dateien an den erwarteten Pfaden nach, und cat prüft ihren Inhalt. Die Plattformprüfung bewertet nun genau diesen beobachtbaren Dateisystemzustand.

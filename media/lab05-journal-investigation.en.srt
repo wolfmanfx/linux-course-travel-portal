@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:11,560
+Service status is the first orientation point. It gives the unit state, recent context, and process result, but we still need the structured event history.
+
+2
+00:00:11,910 --> 00:00:23,310
+journalctl narrows the evidence to one unit and the current boot. Reading upward from the final failure reveals the causal incident identifier rather than merely the last generic message.
+
+3
+00:00:23,660 --> 00:00:38,740
+A second query changes the output format and filters only after the journal is already scoped. This confirms the disk-threshold incident and exit code 42.
+
+4
+00:00:39,090 --> 00:00:47,610
+We record those exact assignments in the answer file and display it before asking the platform checker to verify the submitted evidence.

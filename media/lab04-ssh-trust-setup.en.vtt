@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:13.080
+The .ssh directory is private. We generate a dedicated Ed25519 key with an empty training passphrase, then protect the private key with mode 600.
+
+2
+00:00:13.430 --> 00:00:29.390
+ssh-keyscan records the server host key for port 2222. The following lookup proves the known_hosts entry uses the correct bracketed host and port spelling.
+
+3
+00:00:29.740 --> 00:00:41.820
+ssh-copy-id installs only the public key. The temporary password bootstraps this one operation; it is not the final authentication mechanism.
+
+4
+00:00:42.170 --> 00:00:53.930
+The client profile pins host, port, user, identity file, and IdentitiesOnly. Batch mode and strict host checking then prove that the alias works without a password prompt or an unverified server.

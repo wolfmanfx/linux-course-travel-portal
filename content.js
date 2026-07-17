@@ -1,5 +1,5 @@
 window.COURSE_CONTENT = {
-  "generatedAt": "2026-07-17T11:22:05.571Z",
+  "generatedAt": "2026-07-17T16:19:19.375Z",
   "slides": [
     {
       "number": 1,
@@ -238,10 +238,28 @@ window.COURSE_CONTENT = {
       "shortTitle": "Paths, files, and safe navigation",
       "description": "Create the required project tree and verify every filesystem change.",
       "ready": true,
-      "audio": "media/lab01-filesystem-fieldwork.mp3",
-      "captions": "media/lab01-filesystem-fieldwork.srt",
-      "video": "media/lab01-filesystem-fieldwork.mp4",
-      "transcript": "This solution begins by locating the current directory and confirming the active identity. Those two checks prevent us from changing the wrong place as the wrong user. The inbox contains a welcome note and a draft. We create the required project hierarchy with mkdir dash p and brace expansion, so both child directories are made in one predictable command. Copy preserves the welcome source while move relocates the draft into the archive. The full destination names make the intended final state explicit. Finally, find proves that both files exist at the expected paths, and cat verifies their contents. The platform checker now evaluates the same observable filesystem state."
+      "masterReady": true,
+      "master": "media/lab01-filesystem-fieldwork.mp4",
+      "languages": {
+        "en": {
+          "label": "English",
+          "ready": true,
+          "audio": "media/lab01-filesystem-fieldwork.en.mp3",
+          "captions": "media/lab01-filesystem-fieldwork.en.vtt",
+          "captionsSrt": "media/lab01-filesystem-fieldwork.en.srt",
+          "video": "media/lab01-filesystem-fieldwork.en.mp4",
+          "transcript": "This solution begins by locating the current directory and confirming the active identity. Those two checks prevent us from changing the wrong place as the wrong user.\n\nThe inbox contains a welcome note and a draft. We create the required project hierarchy with mkdir -p and brace expansion, so both child directories are made in one predictable command.\n\ncp preserves the welcome source while mv relocates the draft into the archive. The full destination names make the intended final state explicit.\n\nFinally, find proves that both files exist at the expected paths, and cat verifies their contents. The platform checker now evaluates the same observable filesystem state."
+        },
+        "de": {
+          "label": "Deutsch",
+          "ready": true,
+          "audio": "media/lab01-filesystem-fieldwork.de.mp3",
+          "captions": "media/lab01-filesystem-fieldwork.de.vtt",
+          "captionsSrt": "media/lab01-filesystem-fieldwork.de.srt",
+          "video": "media/lab01-filesystem-fieldwork.de.mp4",
+          "transcript": "Diese Lösung beginnt damit, das aktuelle Verzeichnis zu bestimmen und die aktive Benutzeridentität zu bestätigen. Beide Prüfungen verhindern, dass wir als falscher Benutzer am falschen Ort Änderungen vornehmen.\n\nIm Posteingang liegen eine Willkommensnotiz und ein Entwurf. Mit mkdir -p und der Klammererweiterung erstellen wir die geforderte Projektstruktur; so entstehen beide Unterverzeichnisse mit einem einzigen, vorhersehbaren Befehl.\n\ncp erhält die Willkommensdatei am ursprünglichen Ort, während mv den Entwurf ins Archiv verschiebt. Die vollständigen Zielpfade machen den beabsichtigten Endzustand eindeutig.\n\nAbschließend weist find beide Dateien an den erwarteten Pfaden nach, und cat prüft ihren Inhalt. Die Plattformprüfung bewertet nun genau diesen beobachtbaren Dateisystemzustand."
+        }
+      }
     },
     {
       "id": "lab02",
@@ -250,10 +268,28 @@ window.COURSE_CONTENT = {
       "shortTitle": "APT, grep, sort, and uniq",
       "description": "Install software and turn an access log into useful evidence.",
       "ready": true,
-      "audio": "media/lab02-packages-and-pipelines.mp3",
-      "captions": "media/lab02-packages-and-pipelines.srt",
-      "video": "media/lab02-packages-and-pipelines.mp4",
-      "transcript": "First we demonstrate that tree is absent. APT update refreshes repository metadata, and APT install adds the package through the supported package manager instead of copying an unmanaged binary. D P K G query verifies package state. We then create the exact one-line package report required by the lab, including a final newline. The pipeline extracts field four from every access-log row, sorts equal status codes together, counts adjacent values, and swaps the count and status into the requested order. The final cat command exposes both deliverables. In particular, the status report must contain four zero four followed by three before the automated check can pass."
+      "masterReady": true,
+      "master": "media/lab02-packages-and-pipelines.mp4",
+      "languages": {
+        "en": {
+          "label": "English",
+          "ready": true,
+          "audio": "media/lab02-packages-and-pipelines.en.mp3",
+          "captions": "media/lab02-packages-and-pipelines.en.vtt",
+          "captionsSrt": "media/lab02-packages-and-pipelines.en.srt",
+          "video": "media/lab02-packages-and-pipelines.en.mp4",
+          "transcript": "First we demonstrate that tree is absent. apt update refreshes repository metadata, and apt install adds the package through the supported package manager instead of copying an unmanaged binary.\n\ndpkg-query verifies package state. We then create the exact one-line package report required by the lab, including a final newline.\n\nThe pipeline extracts field four from every access-log row, sorts equal status codes together, counts adjacent values, and swaps the count and status into the requested order.\n\nThe final cat command exposes both deliverables. In particular, the status report must contain 404 followed by 3 before the automated check can pass."
+        },
+        "de": {
+          "label": "Deutsch",
+          "ready": true,
+          "audio": "media/lab02-packages-and-pipelines.de.mp3",
+          "captions": "media/lab02-packages-and-pipelines.de.vtt",
+          "captionsSrt": "media/lab02-packages-and-pipelines.de.srt",
+          "video": "media/lab02-packages-and-pipelines.de.mp4",
+          "transcript": "Zuerst zeigen wir, dass tree nicht installiert ist. apt update aktualisiert die Metadaten der Paketquellen; apt install fügt das Paket anschließend über die vorgesehene Paketverwaltung hinzu, statt eine unverwaltete Binärdatei zu kopieren.\n\ndpkg-query bestätigt den Paketstatus. Danach erstellen wir exakt den im Lab geforderten einzeiligen Paketbericht, einschließlich des abschließenden Zeilenumbruchs.\n\nDie Pipeline liest Feld vier aus jeder Zeile des Zugriffsprotokolls, sortiert gleiche Statuscodes nebeneinander, zählt die aufeinanderfolgenden Werte und bringt Statuscode und Anzahl in die geforderte Reihenfolge.\n\nDer abschließende cat-Befehl zeigt beide Ergebnisse. Insbesondere muss der Statusbericht 404 gefolgt von 3 enthalten, bevor die automatische Prüfung erfolgreich sein kann."
+        }
+      }
     },
     {
       "id": "lab03",
@@ -262,10 +298,28 @@ window.COURSE_CONTENT = {
       "shortTitle": "Ownership, modes, and setgid",
       "description": "Repair a shared directory without widening access beyond the team.",
       "ready": true,
-      "audio": "media/lab03-permission-incident.mp3",
-      "captions": "media/lab03-permission-incident.srt",
-      "video": "media/lab03-permission-incident.mp4",
-      "transcript": "We begin with identities and current state. Alice and Bob are members of webteam, while outsider is deliberately excluded. Stat shows the ownership and numeric mode that need repair. Chown assigns the share and its existing content to the webteam group. Chmod two seven seven zero grants full owner and group access, removes access for others, and sets the set G I D bit on the directory. A real write as Alice proves the positive case. A separate test as outsider proves the negative case, which is essential when we claim least privilege. The final stat output shows the repaired directory and the inherited group on Alice's new file. The checker validates membership, mode, ownership, and both access outcomes."
+      "masterReady": true,
+      "master": "media/lab03-permission-incident.mp4",
+      "languages": {
+        "en": {
+          "label": "English",
+          "ready": true,
+          "audio": "media/lab03-permission-incident.en.mp3",
+          "captions": "media/lab03-permission-incident.en.vtt",
+          "captionsSrt": "media/lab03-permission-incident.en.srt",
+          "video": "media/lab03-permission-incident.en.mp4",
+          "transcript": "We begin with identities and current state. Alice and Bob are members of webteam, while outsider is deliberately excluded. stat shows the ownership and numeric mode that need repair.\n\nchown assigns the share and its existing content to the webteam group. chmod 2770 grants full owner and group access, removes access for others, and sets the set-GID bit on the directory.\n\nA real write as Alice proves the positive case. A separate test as outsider proves the negative case, which is essential when we claim least privilege.\n\nThe final stat output shows the repaired directory and the inherited group on Alice's new file. The checker validates membership, mode, ownership, and both access outcomes."
+        },
+        "de": {
+          "label": "Deutsch",
+          "ready": true,
+          "audio": "media/lab03-permission-incident.de.mp3",
+          "captions": "media/lab03-permission-incident.de.vtt",
+          "captionsSrt": "media/lab03-permission-incident.de.srt",
+          "video": "media/lab03-permission-incident.de.mp4",
+          "transcript": "Wir beginnen mit den Benutzeridentitäten und dem aktuellen Zustand. Alice und Bob gehören zur Gruppe webteam; outsider ist bewusst ausgeschlossen. stat zeigt Eigentümer, Gruppe und den numerischen Modus, die korrigiert werden müssen.\n\nchown weist das Verzeichnis und seinen vorhandenen Inhalt der Gruppe webteam zu. chmod 2770 gewährt Eigentümer und Gruppe vollen Zugriff, entzieht allen anderen den Zugriff und setzt das set-GID-Bit auf dem Verzeichnis.\n\nEin tatsächlicher Schreibvorgang als Alice belegt den erlaubten Zugriff. Ein eigener Test als outsider belegt den verweigerten Zugriff; genau das ist entscheidend, wenn wir das Prinzip der minimalen Rechte beanspruchen.\n\nDie abschließende stat-Ausgabe zeigt das reparierte Verzeichnis und die geerbte Gruppe von Alices neuer Datei. Die Prüfung kontrolliert Mitgliedschaft, Modus, Eigentümerschaft und beide Zugriffsergebnisse."
+        }
+      }
     },
     {
       "id": "lab04",
@@ -274,10 +328,28 @@ window.COURSE_CONTENT = {
       "shortTitle": "Keys, fingerprints, and client profiles",
       "description": "Build a verified key-only SSH connection from first principles.",
       "ready": true,
-      "audio": "media/lab04-ssh-trust-setup.mp3",
-      "captions": "media/lab04-ssh-trust-setup.srt",
-      "video": "media/lab04-ssh-trust-setup.mp4",
-      "transcript": "The dot S S H directory is private. We generate a dedicated Ed two five five one nine key with an empty training passphrase, then protect the private key with mode six hundred. S S H keyscan records the server host key for port two two two two. The following lookup proves the known-hosts entry uses the correct bracketed host and port spelling. S S H copy I D installs only the public key. The temporary password bootstraps this one operation; it is not the final authentication mechanism. The client profile pins host, port, user, identity file, and Identities Only. Batch mode and strict host checking then prove that the alias works without a password prompt or an unverified server."
+      "masterReady": true,
+      "master": "media/lab04-ssh-trust-setup.mp4",
+      "languages": {
+        "en": {
+          "label": "English",
+          "ready": true,
+          "audio": "media/lab04-ssh-trust-setup.en.mp3",
+          "captions": "media/lab04-ssh-trust-setup.en.vtt",
+          "captionsSrt": "media/lab04-ssh-trust-setup.en.srt",
+          "video": "media/lab04-ssh-trust-setup.en.mp4",
+          "transcript": "The .ssh directory is private. We generate a dedicated Ed25519 key with an empty training passphrase, then protect the private key with mode 600.\n\nssh-keyscan records the server host key for port 2222. The following lookup proves the known_hosts entry uses the correct bracketed host and port spelling.\n\nssh-copy-id installs only the public key. The temporary password bootstraps this one operation; it is not the final authentication mechanism.\n\nThe client profile pins host, port, user, identity file, and IdentitiesOnly. Batch mode and strict host checking then prove that the alias works without a password prompt or an unverified server."
+        },
+        "de": {
+          "label": "Deutsch",
+          "ready": true,
+          "audio": "media/lab04-ssh-trust-setup.de.mp3",
+          "captions": "media/lab04-ssh-trust-setup.de.vtt",
+          "captionsSrt": "media/lab04-ssh-trust-setup.de.srt",
+          "video": "media/lab04-ssh-trust-setup.de.mp4",
+          "transcript": "Das Verzeichnis .ssh ist privat. Wir erzeugen einen eigenen Ed25519-Schlüssel mit einer leeren Passphrase für diese Übung und schützen anschließend den privaten Schlüssel mit Modus 600.\n\nssh-keyscan speichert den Hostschlüssel des Servers für Port 2222. Die folgende Suche belegt, dass der Eintrag in known_hosts die korrekte Schreibweise mit Host und Port in eckigen Klammern verwendet.\n\nssh-copy-id installiert ausschließlich den öffentlichen Schlüssel. Das temporäre Passwort ermöglicht nur diesen einmaligen Einrichtungsschritt; es ist nicht das endgültige Authentifizierungsverfahren.\n\nDas Clientprofil legt Host, Port, Benutzer, Identitätsdatei und IdentitiesOnly fest. BatchMode und StrictHostKeyChecking belegen anschließend, dass der Alias ohne Passwortabfrage und ohne ungeprüften Server funktioniert."
+        }
+      }
     },
     {
       "id": "lab05",
@@ -286,10 +358,28 @@ window.COURSE_CONTENT = {
       "shortTitle": "Filter logs to find the causal event",
       "description": "Use systemd journal evidence to explain a service failure.",
       "ready": true,
-      "audio": "media/lab05-journal-investigation.mp3",
-      "captions": "media/lab05-journal-investigation.srt",
-      "video": "media/lab05-journal-investigation.mp4",
-      "transcript": "Service status is the first orientation point. It gives the unit state, recent context, and process result, but we still need the structured event history. Journal C T L narrows the evidence to one unit and the current boot. Reading upward from the final failure reveals the causal incident identifier rather than merely the last generic message. A second query changes the output format and filters only after the journal is already scoped. This confirms the disk-threshold incident and exit code forty two. We record those exact assignments in the answer file and display it before asking the platform checker to verify the submitted evidence."
+      "masterReady": true,
+      "master": "media/lab05-journal-investigation.mp4",
+      "languages": {
+        "en": {
+          "label": "English",
+          "ready": true,
+          "audio": "media/lab05-journal-investigation.en.mp3",
+          "captions": "media/lab05-journal-investigation.en.vtt",
+          "captionsSrt": "media/lab05-journal-investigation.en.srt",
+          "video": "media/lab05-journal-investigation.en.mp4",
+          "transcript": "Service status is the first orientation point. It gives the unit state, recent context, and process result, but we still need the structured event history.\n\njournalctl narrows the evidence to one unit and the current boot. Reading upward from the final failure reveals the causal incident identifier rather than merely the last generic message.\n\nA second query changes the output format and filters only after the journal is already scoped. This confirms the disk-threshold incident and exit code 42.\n\nWe record those exact assignments in the answer file and display it before asking the platform checker to verify the submitted evidence."
+        },
+        "de": {
+          "label": "Deutsch",
+          "ready": true,
+          "audio": "media/lab05-journal-investigation.de.mp3",
+          "captions": "media/lab05-journal-investigation.de.vtt",
+          "captionsSrt": "media/lab05-journal-investigation.de.srt",
+          "video": "media/lab05-journal-investigation.de.mp4",
+          "transcript": "Der Dienststatus ist der erste Orientierungspunkt. Er zeigt den Zustand der Unit, den jüngsten Kontext und das Prozessergebnis; für die strukturierte Ereignishistorie benötigen wir jedoch das Journal.\n\njournalctl grenzt die Belege auf eine Unit und den aktuellen Systemstart ein. Wenn wir vom letzten Fehler nach oben lesen, finden wir die ursächliche Incident-Kennung statt nur der letzten allgemeinen Meldung.\n\nEine zweite Abfrage ändert das Ausgabeformat und filtert erst, nachdem das Journal bereits eingegrenzt ist. Damit bestätigen wir den Vorfall DISK_THRESHOLD und Exit-Code 42.\n\nWir tragen genau diese Zuweisungen in die Antwortdatei ein und zeigen sie an, bevor die Plattformprüfung die eingereichten Belege kontrolliert."
+        }
+      }
     },
     {
       "id": "lab06",
@@ -298,10 +388,28 @@ window.COURSE_CONTENT = {
       "shortTitle": "Diagnose, repair, and verify",
       "description": "Repair a web service and prove both system state and application behavior.",
       "ready": true,
-      "audio": "media/lab06-broken-service-capstone.mp3",
-      "captions": "media/lab06-broken-service-capstone.srt",
-      "video": "media/lab06-broken-service-capstone.mp4",
-      "transcript": "The capstone starts with evidence. Status shows the failed unit, the journal exposes a change-directory error, and the unit definition names the required working directory and service account. The smallest durable repair is to create the missing web root with courseapp ownership. We add the exact health sentence and ensure the service account owns the content it must serve. Enable dash dash now starts the service immediately and also configures it for the next boot. This changes both current and future state in one explicit operation. We verify active state, enabled state, the listening socket, and finally the HTTP behavior. Curl returning the health sentence is stronger evidence than a green systemd status alone."
+      "masterReady": true,
+      "master": "media/lab06-broken-service-capstone.mp4",
+      "languages": {
+        "en": {
+          "label": "English",
+          "ready": true,
+          "audio": "media/lab06-broken-service-capstone.en.mp3",
+          "captions": "media/lab06-broken-service-capstone.en.vtt",
+          "captionsSrt": "media/lab06-broken-service-capstone.en.srt",
+          "video": "media/lab06-broken-service-capstone.en.mp4",
+          "transcript": "The capstone starts with evidence. systemctl status shows the failed unit, the journal exposes a change-directory error, and the unit definition names the required working directory and service account.\n\nThe smallest durable repair is to create the missing web root with courseapp ownership. We add the exact health sentence and ensure the service account owns the content it must serve.\n\nsystemctl enable --now starts the service immediately and also configures it for the next boot. This changes both current and future state in one explicit operation.\n\nWe verify active state, enabled state, the listening socket, and finally the HTTP behavior. curl returning the health sentence is stronger evidence than a green systemd status alone."
+        },
+        "de": {
+          "label": "Deutsch",
+          "ready": true,
+          "audio": "media/lab06-broken-service-capstone.de.mp3",
+          "captions": "media/lab06-broken-service-capstone.de.vtt",
+          "captionsSrt": "media/lab06-broken-service-capstone.de.srt",
+          "video": "media/lab06-broken-service-capstone.de.mp4",
+          "transcript": "Das Abschluss-Lab beginnt mit Belegen. systemctl status zeigt die fehlgeschlagene Unit, das Journal meldet einen Fehler beim Wechsel des Verzeichnisses, und die Unit-Definition nennt Arbeitsverzeichnis und Dienstkonto.\n\nDie kleinste dauerhafte Reparatur besteht darin, das fehlende Web-Stammverzeichnis mit courseapp als Eigentümer anzulegen. Wir fügen exakt den vorgegebenen Zustandssatz ein und stellen sicher, dass das Dienstkonto die auszuliefernden Inhalte besitzt.\n\nsystemctl enable --now startet den Dienst sofort und richtet ihn zugleich für den nächsten Systemstart ein. Damit ändern wir den aktuellen und den zukünftigen Zustand in einem ausdrücklichen Schritt.\n\nWir prüfen den aktiven Zustand, die Aktivierung beim Systemstart, den lauschenden Socket und schließlich das HTTP-Verhalten. Dass curl den Zustandssatz zurückliefert, ist ein stärkerer Beleg als ein grüner systemd-Status allein."
+        }
+      }
     }
   ]
 };

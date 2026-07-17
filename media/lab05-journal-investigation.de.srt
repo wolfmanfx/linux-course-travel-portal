@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:15,280
+Der Dienststatus ist der erste Orientierungspunkt. Er zeigt den Zustand der Unit, den jüngsten Kontext und das Prozessergebnis; für die strukturierte Ereignishistorie benötigen wir jedoch das Journal.
+
+2
+00:00:15,630 --> 00:00:31,590
+journalctl grenzt die Belege auf eine Unit und den aktuellen Systemstart ein. Wenn wir vom letzten Fehler nach oben lesen, finden wir die ursächliche Incident-Kennung statt nur der letzten allgemeinen Meldung.
+
+3
+00:00:31,940 --> 00:00:42,620
+Eine zweite Abfrage ändert das Ausgabeformat und filtert erst, nachdem das Journal bereits eingegrenzt ist. Damit bestätigen wir den Vorfall DISK_THRESHOLD und Exit-Code 42.
+
+4
+00:00:42,970 --> 00:00:56,090
+Wir tragen genau diese Zuweisungen in die Antwortdatei ein und zeigen sie an, bevor die Plattformprüfung die eingereichten Belege kontrolliert.

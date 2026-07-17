@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:20.480
+Zuerst zeigen wir, dass tree nicht installiert ist. apt update aktualisiert die Metadaten der Paketquellen; apt install fügt das Paket anschließend über die vorgesehene Paketverwaltung hinzu, statt eine unverwaltete Binärdatei zu kopieren.
+
+2
+00:00:20.830 --> 00:00:31.590
+dpkg-query bestätigt den Paketstatus. Danach erstellen wir exakt den im Lab geforderten einzeiligen Paketbericht, einschließlich des abschließenden Zeilenumbruchs.
+
+3
+00:00:31.940 --> 00:00:44.860
+Die Pipeline liest Feld vier aus jeder Zeile des Zugriffsprotokolls, sortiert gleiche Statuscodes nebeneinander, zählt die aufeinanderfolgenden Werte und bringt Statuscode und Anzahl in die geforderte Reihenfolge.
+
+4
+00:00:45.210 --> 00:00:59.010
+Der abschließende cat-Befehl zeigt beide Ergebnisse. Insbesondere muss der Statusbericht 404 gefolgt von 3 enthalten, bevor die automatische Prüfung erfolgreich sein kann.

@@ -104,6 +104,12 @@ dialog::backdrop { background: rgba(10,5,16,.78); backdrop-filter: blur(4px); }
 .dialog-content { padding: 28px; }
 .dialog-content h2 { margin-top: 0; }
 .dialog-content video { display: block; width: 100%; border-radius: 12px; background: black; }
+.dialog-content audio { width: 100%; }
+.language-switch { display: inline-flex; gap: 4px; margin: 0 0 16px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: #f3edf7; }
+.language-switch button { border: 0; border-radius: 999px; padding: 8px 14px; color: var(--muted); background: transparent; font-weight: 800; cursor: pointer; }
+.language-switch button[aria-pressed="true"] { color: white; background: var(--ink); }
+.walkthrough-links { display: flex; flex-wrap: wrap; gap: 14px; margin: 14px 0 20px; font-size: .85rem; font-weight: 750; }
+.walkthrough-links a { color: var(--violet); }
 .dialog-content pre { white-space: pre-wrap; font: inherit; line-height: 1.6; color: var(--muted); }
 
 @media (max-width: 1000px) {

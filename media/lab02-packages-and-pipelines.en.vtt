@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:12.160
+First we demonstrate that tree is absent. apt update refreshes repository metadata, and apt install adds the package through the supported package manager instead of copying an unmanaged binary.
+
+2
+00:00:12.510 --> 00:00:24.670
+dpkg-query verifies package state. We then create the exact one-line package report required by the lab, including a final newline.
+
+3
+00:00:25.020 --> 00:00:33.820
+The pipeline extracts field four from every access-log row, sorts equal status codes together, counts adjacent values, and swaps the count and status into the requested order.
+
+4
+00:00:34.170 --> 00:00:50.890
+The final cat command exposes both deliverables. In particular, the status report must contain 404 followed by 3 before the automated check can pass.

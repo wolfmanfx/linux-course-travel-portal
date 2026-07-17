@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:13.800
+Das Verzeichnis .ssh ist privat. Wir erzeugen einen eigenen Ed25519-Schlüssel mit einer leeren Passphrase für diese Übung und schützen anschließend den privaten Schlüssel mit Modus 600.
+
+2
+00:00:14.150 --> 00:00:25.630
+ssh-keyscan speichert den Hostschlüssel des Servers für Port 2222. Die folgende Suche belegt, dass der Eintrag in known_hosts die korrekte Schreibweise mit Host und Port in eckigen Klammern verwendet.
+
+3
+00:00:25.980 --> 00:00:39.460
+ssh-copy-id installiert ausschließlich den öffentlichen Schlüssel. Das temporäre Passwort ermöglicht nur diesen einmaligen Einrichtungsschritt; es ist nicht das endgültige Authentifizierungsverfahren.
+
+4
+00:00:39.810 --> 00:00:53.570
+Das Clientprofil legt Host, Port, Benutzer, Identitätsdatei und IdentitiesOnly fest. BatchMode und StrictHostKeyChecking belegen anschließend, dass der Alias ohne Passwortabfrage und ohne ungeprüften Server funktioniert.

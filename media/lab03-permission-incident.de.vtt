@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:14.520
+Wir beginnen mit den Benutzeridentitäten und dem aktuellen Zustand. Alice und Bob gehören zur Gruppe webteam; outsider ist bewusst ausgeschlossen. stat zeigt Eigentümer, Gruppe und den numerischen Modus, die korrigiert werden müssen.
+
+2
+00:00:14.870 --> 00:00:30.430
+chown weist das Verzeichnis und seinen vorhandenen Inhalt der Gruppe webteam zu. chmod 2770 gewährt Eigentümer und Gruppe vollen Zugriff, entzieht allen anderen den Zugriff und setzt das set-GID-Bit auf dem Verzeichnis.
+
+3
+00:00:30.780 --> 00:00:41.940
+Ein tatsächlicher Schreibvorgang als Alice belegt den erlaubten Zugriff. Ein eigener Test als outsider belegt den verweigerten Zugriff; genau das ist entscheidend, wenn wir das Prinzip der minimalen Rechte beanspruchen.
+
+4
+00:00:42.290 --> 00:00:53.330
+Die abschließende stat-Ausgabe zeigt das reparierte Verzeichnis und die geerbte Gruppe von Alices neuer Datei. Die Prüfung kontrolliert Mitgliedschaft, Modus, Eigentümerschaft und beide Zugriffsergebnisse.

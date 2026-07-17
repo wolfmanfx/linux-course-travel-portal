@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:10.560
+Das Abschluss-Lab beginnt mit Belegen. systemctl status zeigt die fehlgeschlagene Unit, das Journal meldet einen Fehler beim Wechsel des Verzeichnisses, und die Unit-Definition nennt Arbeitsverzeichnis und Dienstkonto.
+
+2
+00:00:10.910 --> 00:00:29.750
+Die kleinste dauerhafte Reparatur besteht darin, das fehlende Web-Stammverzeichnis mit courseapp als Eigentümer anzulegen. Wir fügen exakt den vorgegebenen Zustandssatz ein und stellen sicher, dass das Dienstkonto die auszuliefernden Inhalte besitzt.
+
+3
+00:00:30.100 --> 00:00:45.100
+systemctl enable --now startet den Dienst sofort und richtet ihn zugleich für den nächsten Systemstart ein. Damit ändern wir den aktuellen und den zukünftigen Zustand in einem ausdrücklichen Schritt.
+
+4
+00:00:45.450 --> 00:01:05.970
+Wir prüfen den aktiven Zustand, die Aktivierung beim Systemstart, den lauschenden Socket und schließlich das HTTP-Verhalten. Dass curl den Zustandssatz zurückliefert, ist ein stärkerer Beleg als ein grüner systemd-Status allein.

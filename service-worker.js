@@ -1,4 +1,4 @@
-const CACHE = "linux-foundations-travel-v3";
+const CACHE = "linux-foundations-travel-v4";
 const SHELL = ["./", "index.html", "styles.css", "app.js", "content.js", "manifest.webmanifest", "assets/icon.svg", "assets/slides/slide-1.png"];
 
 self.addEventListener("install", event => event.waitUntil(
@@ -29,8 +29,10 @@ self.addEventListener("fetch", event => {
   }
 
   event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
-    const copy = response.clone();
-    caches.open(CACHE).then(cache => cache.put(event.request, copy));
+    if (response.ok && response.status === 200) {
+      const copy = response.clone();
+      caches.open(CACHE).then(cache => cache.put(event.request, copy));
+    }
     return response;
   })));
 });
