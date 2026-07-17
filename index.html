@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#160b24">
+  <meta name="description" content="Linux Foundations course slides, speaker notes, labs, and solution walkthroughs.">
+  <title>Linux Foundations · Course Companion</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Linux Foundations home">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>Linux Foundations</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#slides">Slides</a>
+      <a href="#videos">Videos</a>
+      <a href="#downloads">Downloads</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Temporary travel portal</p>
+        <h1>Linux skills,<br><span>ready wherever you are.</span></h1>
+        <p class="lede">Review the full course deck, read the speaker notes, listen to every English walkthrough, and download the material for offline use.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#slides">Open slide deck</a>
+          <a class="button secondary" href="#videos">Browse walkthroughs</a>
+        </div>
+        <div class="stats" aria-label="Course summary">
+          <div><strong id="slideCount">38</strong><span>slides</span></div>
+          <div><strong>6</strong><span>labs</span></div>
+          <div><strong>3 + 3</strong><span>hours</span></div>
+        </div>
+      </div>
+      <div class="terminal-card" aria-label="Course workflow">
+        <div class="window-bar"><i></i><i></i><i></i><span>course@browser</span></div>
+        <pre><code><span class="prompt">$</span> locate context
+<span class="prompt">$</span> predict the change
+<span class="prompt">$</span> act narrowly
+<span class="prompt">$</span> observe evidence
+<span class="prompt">$</span> verify behavior
+
+<span class="success">✓ system state understood</span></code></pre>
+      </div>
+    </section>
+
+    <section class="section" id="slides">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Presentation</p>
+          <h2>Course deck and speaker notes</h2>
+        </div>
+        <div class="section-actions">
+          <a class="text-link" href="downloads/linux-foundations-browser-lab-workshop.pptx" download>Download PPTX</a>
+          <a class="text-link" href="downloads/linux-foundations-browser-lab-workshop.pdf" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+      </div>
+
+      <div class="deck-shell">
+        <div class="slide-stage">
+          <img id="currentSlide" src="assets/slides/slide-1.png" alt="Course slide 1" width="1600" height="900">
+          <button class="slide-arrow previous" id="previousSlide" type="button" aria-label="Previous slide">←</button>
+          <button class="slide-arrow next" id="nextSlide" type="button" aria-label="Next slide">→</button>
+        </div>
+        <aside class="notes-panel" aria-live="polite">
+          <div class="slide-counter"><span id="slidePosition">Slide 1 of 38</span><button id="fullscreenSlide" type="button">Full screen</button></div>
+          <h3>Speaker notes</h3>
+          <div id="speakerNotes" class="speaker-notes">Loading speaker notes…</div>
+        </aside>
+      </div>
+
+      <div class="thumbnail-strip" id="thumbnailStrip" aria-label="Slide thumbnails"></div>
+    </section>
+
+    <section class="section alt" id="videos">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Solution walkthroughs</p>
+          <h2>Six labs, explained in English</h2>
+        </div>
+        <p class="heading-note">Finished MP4 recordings appear automatically. Until then, each card includes the generated voice track and transcript.</p>
+      </div>
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+    <section class="section" id="downloads">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Offline kit</p>
+          <h2>Take the course with you</h2>
+        </div>
+      </div>
+      <div class="download-grid">
+        <a class="download-card" href="downloads/linux-foundations-browser-lab-workshop.pptx" download><span>PPTX</span><strong>Editable slide deck</strong><small>PowerPoint with speaker notes</small></a>
+        <a class="download-card" href="downloads/linux-foundations-browser-lab-workshop.pdf" download><span>PDF</span><strong>Travel-friendly deck</strong><small>Easy to open on phone or tablet</small></a>
+        <a class="download-card" href="downloads/SPEAKER_SCRIPT.md" download><span>MD</span><strong>Speaker script</strong><small>Complete English delivery notes</small></a>
+        <a class="download-card" href="downloads/LAB_GUIDE.md" download><span>MD</span><strong>Participant lab guide</strong><small>All six guided exercises</small></a>
+        <a class="download-card" href="downloads/INSTRUCTOR_RUNBOOK.md" download><span>MD</span><strong>Instructor runbook</strong><small>Timing, setup, and recovery</small></a>
+        <a class="download-card" href="downloads/LIVE_DEMOS.md" download><span>MD</span><strong>Live demo guide</strong><small>Commands and talking points</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Linux Foundations · browser labs powered by Incus + ttyd</p>
+    <button id="installPortal" type="button" hidden>Install for offline access</button>
+  </footer>
+
+  <dialog id="videoDialog">
+    <button class="dialog-close" type="button" aria-label="Close video">×</button>
+    <div id="videoDialogBody"></div>
+  </dialog>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

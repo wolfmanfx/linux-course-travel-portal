@@ -1,0 +1,9 @@
+{
+  "name": "Linux Foundations Course Companion",
+  "short_name": "Linux Course",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff8ee",
+  "theme_color": "#160b24",
+  "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

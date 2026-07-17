@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:09,856
+This solution begins by locating the current directory and confirming the active identity. Those two checks prevent us from changing the wrong place as the wrong user.
+
+2
+00:00:09,856 --> 00:00:21,538
+The inbox contains a welcome note and a draft. We create the required project hierarchy with mkdir dash p and brace expansion, so both child directories are made in one predictable command.
+
+3
+00:00:21,538 --> 00:00:29,934
+Copy preserves the welcome source while move relocates the draft into the archive. The full destination names make the intended final state explicit.
+
+4
+00:00:29,934 --> 00:00:39,426
+Finally, find proves that both files exist at the expected paths, and cat verifies their contents. The platform checker now evaluates the same observable filesystem state.

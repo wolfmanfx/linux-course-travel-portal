@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:11,471
+The dot S S H directory is private. We generate a dedicated Ed two five five one nine key with an empty training passphrase, then protect the private key with mode six hundred.
+
+2
+00:00:11,471 --> 00:00:21,899
+S S H keyscan records the server host key for port two two two two. The following lookup proves the known-hosts entry uses the correct bracketed host and port spelling.
+
+3
+00:00:21,899 --> 00:00:30,589
+S S H copy I D installs only the public key. The temporary password bootstraps this one operation; it is not the final authentication mechanism.
+
+4
+00:00:30,589 --> 00:00:41,713
+The client profile pins host, port, user, identity file, and Identities Only. Batch mode and strict host checking then prove that the alias works without a password prompt or an unverified server.
