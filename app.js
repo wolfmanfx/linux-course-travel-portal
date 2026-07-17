@@ -88,5 +88,13 @@ installButton.addEventListener("click", async () => {
 });
 
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-  navigator.serviceWorker.register("service-worker.js");
+  const replacingCachedPortal = Boolean(navigator.serviceWorker.controller);
+  let reloadingForUpdate = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!replacingCachedPortal || reloadingForUpdate) return;
+    reloadingForUpdate = true;
+    location.reload();
+  });
+  navigator.serviceWorker.register("service-worker.js", { updateViaCache: "none" })
+    .then(registration => registration.update());
 }
