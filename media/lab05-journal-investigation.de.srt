@@ -1,15 +1,15 @@
 1
-00:00:00,000 --> 00:00:15,280
-Der Dienststatus ist der erste Orientierungspunkt. Er zeigt den Zustand der Unit, den jüngsten Kontext und das Prozessergebnis; für die strukturierte Ereignishistorie benötigen wir jedoch das Journal.
+00:00:00,000 --> 00:00:15,220
+systemctl status ist der erste Check. Der Output zeigt Unit Status, aktuellen Context und Process Result; für die Event History brauchen wir zusätzlich die Journal Logs.
 
 2
-00:00:15,630 --> 00:00:31,590
-journalctl grenzt die Belege auf eine Unit und den aktuellen Systemstart ein. Wenn wir vom letzten Fehler nach oben lesen, finden wir die ursächliche Incident-Kennung statt nur der letzten allgemeinen Meldung.
+00:00:15,570 --> 00:00:27,070
+journalctl scoped die Evidence auf eine Unit und den aktuellen Boot. Vom finalen Failure lesen wir nach oben und finden so die kausale Incident ID statt nur der letzten generischen Message.
 
 3
-00:00:31,940 --> 00:00:42,620
-Eine zweite Abfrage ändert das Ausgabeformat und filtert erst, nachdem das Journal bereits eingegrenzt ist. Damit bestätigen wir den Vorfall DISK_THRESHOLD und Exit-Code 42.
+00:00:27,420 --> 00:00:42,200
+Eine zweite journalctl Query ändert das Output Format, und grep filtert erst nach dem Scoping. Damit bestätigen wir DISK_THRESHOLD und Exit Code 42.
 
 4
-00:00:42,970 --> 00:00:56,090
-Wir tragen genau diese Zuweisungen in die Antwortdatei ein und zeigen sie an, bevor die Plattformprüfung die eingereichten Belege kontrolliert.
+00:00:42,550 --> 00:00:54,610
+Wir schreiben die exakten Assignments in lab-answer.txt und zeigen das File mit cat, bevor der Platform Checker die Evidence validiert.

@@ -1,4 +1,4 @@
-const CACHE = "linux-foundations-travel-v4";
+const CACHE = "linux-foundations-travel-v5";
 const SHELL = ["./", "index.html", "styles.css", "app.js", "content.js", "manifest.webmanifest", "assets/icon.svg", "assets/slides/slide-1.png"];
 
 self.addEventListener("install", event => event.waitUntil(

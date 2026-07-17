@@ -1,15 +1,15 @@
 1
-00:00:00,000 --> 00:00:13,000
-We begin with identities and current state. Alice and Bob are members of webteam, while outsider is deliberately excluded. stat shows the ownership and numeric mode that need repair.
+00:00:00,000 --> 00:00:09,940
+We begin with users, group membership, and current state. Alice and Bob belong to webteam, while outsider is deliberately excluded. stat shows the owner, group, and numeric permissions that need repair.
 
 2
-00:00:13,350 --> 00:00:34,870
-chown assigns the share and its existing content to the webteam group. chmod 2770 grants full owner and group access, removes access for others, and sets the set-GID bit on the directory.
+00:00:10,290 --> 00:00:20,670
+chown assigns the share and existing content to the webteam group. chmod 2770 grants full owner and group permissions, removes access for others, and sets the set-GID bit on the directory.
 
 3
-00:00:35,220 --> 00:00:49,340
+00:00:21,020 --> 00:00:35,040
 A real write as Alice proves the positive case. A separate test as outsider proves the negative case, which is essential when we claim least privilege.
 
 4
-00:00:49,690 --> 00:01:01,570
-The final stat output shows the repaired directory and the inherited group on Alice's new file. The checker validates membership, mode, ownership, and both access outcomes.
+00:00:35,390 --> 00:00:43,910
+The final stat output shows the repaired directory and the inherited group on Alice's new file. The checker validates membership, permissions, ownership, and both access outcomes.

@@ -1,17 +1,17 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:20.480
-Zuerst zeigen wir, dass tree nicht installiert ist. apt update aktualisiert die Metadaten der Paketquellen; apt install fügt das Paket anschließend über die vorgesehene Paketverwaltung hinzu, statt eine unverwaltete Binärdatei zu kopieren.
+00:00:00.000 --> 00:00:21.480
+Zuerst zeigt command -v, dass tree fehlt. apt update refreshed die Repository Metadata; apt install installiert das Package über den vorgesehenen Package Manager statt als unmanaged Binary.
 
 2
-00:00:20.830 --> 00:00:31.590
-dpkg-query bestätigt den Paketstatus. Danach erstellen wir exakt den im Lab geforderten einzeiligen Paketbericht, einschließlich des abschließenden Zeilenumbruchs.
+00:00:21.830 --> 00:00:29.230
+dpkg-query checkt den Package Status. Danach erstellen wir den exakt geforderten One-Line Package Report inklusive finalem Newline.
 
 3
-00:00:31.940 --> 00:00:44.860
-Die Pipeline liest Feld vier aus jeder Zeile des Zugriffsprotokolls, sortiert gleiche Statuscodes nebeneinander, zählt die aufeinanderfolgenden Werte und bringt Statuscode und Anzahl in die geforderte Reihenfolge.
+00:00:29.580 --> 00:00:39.420
+Die Pipeline liest mit awk Field vier aus jeder Access-Log-Zeile, sort gruppiert gleiche Status Codes, uniq zählt sie, und das zweite awk bringt Status Code und Count in die geforderte Reihenfolge.
 
 4
-00:00:45.210 --> 00:00:59.010
-Der abschließende cat-Befehl zeigt beide Ergebnisse. Insbesondere muss der Statusbericht 404 gefolgt von 3 enthalten, bevor die automatische Prüfung erfolgreich sein kann.
+00:00:39.770 --> 00:00:53.010
+Der letzte cat Command zeigt beide Files. Der Status Report muss 404 gefolgt von 3 enthalten, bevor der automatische Checker erfolgreich ist.

@@ -1,15 +1,15 @@
 1
-00:00:00,000 --> 00:00:14,520
-Wir beginnen mit den Benutzeridentitäten und dem aktuellen Zustand. Alice und Bob gehören zur Gruppe webteam; outsider ist bewusst ausgeschlossen. stat zeigt Eigentümer, Gruppe und den numerischen Modus, die korrigiert werden müssen.
+00:00:00,000 --> 00:00:09,660
+Wir starten mit Usern, Group Membership und Current State. Alice und Bob sind in webteam, outsider bleibt bewusst draußen. stat zeigt Owner, Group und numerische Permissions, die wir reparieren müssen.
 
 2
-00:00:14,870 --> 00:00:30,430
-chown weist das Verzeichnis und seinen vorhandenen Inhalt der Gruppe webteam zu. chmod 2770 gewährt Eigentümer und Gruppe vollen Zugriff, entzieht allen anderen den Zugriff und setzt das set-GID-Bit auf dem Verzeichnis.
+00:00:10,010 --> 00:00:20,830
+chown setzt webteam als Group Owner für Share und vorhandenen Content. chmod 2770 gibt Owner und Group volle Permissions, blockiert Others und setzt das set-GID Bit auf dem Directory.
 
 3
-00:00:30,780 --> 00:00:41,940
-Ein tatsächlicher Schreibvorgang als Alice belegt den erlaubten Zugriff. Ein eigener Test als outsider belegt den verweigerten Zugriff; genau das ist entscheidend, wenn wir das Prinzip der minimalen Rechte beanspruchen.
+00:00:21,180 --> 00:00:34,580
+Ein echter Write als Alice ist der Positive Case. Ein separater Test als outsider ist der Negative Case; beide zusammen belegen Least Privilege.
 
 4
-00:00:42,290 --> 00:00:53,330
-Die abschließende stat-Ausgabe zeigt das reparierte Verzeichnis und die geerbte Gruppe von Alices neuer Datei. Die Prüfung kontrolliert Mitgliedschaft, Modus, Eigentümerschaft und beide Zugriffsergebnisse.
+00:00:34,930 --> 00:00:47,930
+Der finale stat Output zeigt das reparierte Directory und die geerbte Group auf Alices neuem File. Der Checker validiert Membership, Permissions, Ownership und beide Access Results.

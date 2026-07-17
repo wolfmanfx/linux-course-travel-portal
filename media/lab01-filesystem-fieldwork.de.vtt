@@ -1,17 +1,17 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:11.520
-Diese Lösung beginnt damit, das aktuelle Verzeichnis zu bestimmen und die aktive Benutzeridentität zu bestätigen. Beide Prüfungen verhindern, dass wir als falscher Benutzer am falschen Ort Änderungen vornehmen.
+00:00:00.000 --> 00:00:19.180
+Wir starten mit pwd und whoami und checken damit Working Directory und aktiven User. So vermeiden wir Änderungen am falschen Path oder unter der falschen Identity.
 
 2
-00:00:11.870 --> 00:00:29.790
-Im Posteingang liegen eine Willkommensnotiz und ein Entwurf. Mit mkdir -p und der Klammererweiterung erstellen wir die geforderte Projektstruktur; so entstehen beide Unterverzeichnisse mit einem einzigen, vorhersehbaren Befehl.
+00:00:19.530 --> 00:00:34.830
+Im inbox Directory liegen ein Welcome File und ein Draft. mkdir -p mit Brace Expansion erstellt beide benötigten Directories in einem reproduzierbaren Command.
 
 3
-00:00:30.140 --> 00:00:42.740
-cp erhält die Willkommensdatei am ursprünglichen Ort, während mv den Entwurf ins Archiv verschiebt. Die vollständigen Zielpfade machen den beabsichtigten Endzustand eindeutig.
+00:00:35.180 --> 00:00:46.560
+cp lässt das Welcome File am Source Path stehen, während mv den Draft ins archive Directory verschiebt. Die vollständigen Destination Paths machen den gewünschten End State eindeutig.
 
 4
-00:00:43.090 --> 00:00:57.370
-Abschließend weist find beide Dateien an den erwarteten Pfaden nach, und cat prüft ihren Inhalt. Die Plattformprüfung bewertet nun genau diesen beobachtbaren Dateisystemzustand.
+00:00:46.910 --> 00:00:54.770
+Zum Schluss zeigt find beide Files an den erwarteten Paths, und cat prüft ihren Content. Der Platform Checker bewertet genau diesen sichtbaren File-System State.

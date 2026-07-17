@@ -1,15 +1,15 @@
 1
-00:00:00,000 --> 00:00:10,120
-The capstone starts with evidence. systemctl status shows the failed unit, the journal exposes a change-directory error, and the unit definition names the required working directory and service account.
+00:00:00,000 --> 00:00:09,980
+The capstone starts with evidence. systemctl status shows the failed unit, journalctl exposes a change-directory error, and systemctl cat names the required working directory and service account.
 
 2
-00:00:10,470 --> 00:00:28,510
-The smallest durable repair is to create the missing web root with courseapp ownership. We add the exact health sentence and ensure the service account owns the content it must serve.
+00:00:10,330 --> 00:00:19,550
+The smallest durable repair creates the missing web root with courseapp ownership. We add the exact health sentence and ensure that the service account owns the content it serves.
 
 3
-00:00:28,860 --> 00:00:45,660
-systemctl enable --now starts the service immediately and also configures it for the next boot. This changes both current and future state in one explicit operation.
+00:00:19,900 --> 00:00:33,920
+systemctl enable --now starts the service immediately and enables it for the next boot. This changes both current and future state in one explicit operation.
 
 4
-00:00:46,010 --> 00:01:02,450
-We verify active state, enabled state, the listening socket, and finally the HTTP behavior. curl returning the health sentence is stronger evidence than a green systemd status alone.
+00:00:34,270 --> 00:00:43,290
+We verify active and enabled state, the listening socket, and finally the HTTP response. curl returning the health sentence is stronger evidence than a green systemd status alone.
