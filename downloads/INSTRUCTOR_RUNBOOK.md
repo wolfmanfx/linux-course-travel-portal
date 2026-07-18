@@ -31,12 +31,14 @@ The timing below contains exactly 180 minutes of theory/demos and 180 minutes of
 
 | Lab | Min | Running total |
 |---|---:|---:|
-| 1. Launch and inspect VM | 25 | 25 |
-| 2. Navigate and manipulate files | 35 | 60 |
-| 3. Install software and edit text | 25 | 85 |
-| 4. Shared-directory permissions | 35 | 120 |
-| 5. SSH key setup and client profile | 30 | 150 |
-| 6. Repair a service from logs | 30 | 180 |
+| 1. System orientation | 15 | 15 |
+| 2. Filesystem and links | 25 | 40 |
+| 3. Editor and text evidence | 20 | 60 |
+| 4. Package lifecycle | 20 | 80 |
+| 5. Permission incident | 30 | 110 |
+| 6. SSH trust setup | 25 | 135 |
+| 7. Journal investigation | 20 | 155 |
+| 8. Broken-service capstone | 25 | 180 |
 
 ## Optional wall-clock schedule
 
@@ -48,9 +50,9 @@ If breaks and lunch are outside the six instructional hours:
 | 10:30–10:45 | Break |
 | 10:45–12:15 | Theory and demos, part 2 |
 | 12:15–13:00 | Lunch |
-| 13:00–14:30 | Labs 1–3 |
+| 13:00–14:30 | Labs 1–4 plus Lab 5 start |
 | 14:30–14:45 | Break |
-| 14:45–16:15 | Labs 4–6 |
+| 14:45–16:15 | Finish Lab 5, then Labs 6–8 |
 
 If the venue grants only six wall-clock hours, use 15-minute breaks and reduce each half to 165 teaching minutes; keep the participant/theory ratio at 50/50 by removing optional discussion prompts, not lab checkpoints.
 
@@ -205,4 +207,3 @@ Ask pairs to answer without slides:
 ## After class
 
 Recommend the Linux Upskill Challenge for continued practice. Remind learners that the course VM is disposable and that production systems require change control, backups, and organization-specific security policies.
-

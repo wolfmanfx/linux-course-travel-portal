@@ -6,7 +6,7 @@ second seat as a fallback. Reset only the named scenario before each demo.
 
 ## Demo 1 — The browser/session boundary and navigation (8 min)
 
-In the portal, prepare **Lab 1 — Filesystem Fieldwork**. Then focus the ttyd
+In the portal, prepare **Lab 2 — Filesystem & Links**. Then focus the ttyd
 terminal and run:
 
 ```bash
@@ -31,7 +31,7 @@ session's state.
 
 ## Demo 2 — Diagnose and repair permissions (10 min)
 
-Prepare **Lab 3 — Permission Incident** before starting. The scenario already
+Prepare **Lab 5 — Permission Incident** before starting. The scenario already
 contains Alice, Bob, Outsider, `webteam`, and `/srv/team-share`. Use the lab
 objects or create the parallel `demoops` example below.
 
@@ -54,7 +54,7 @@ Teaching beat: read owner, group, and mode before changing them; make the smalle
 
 ## Demo 3 — SSH key setup and server verification (10 min)
 
-Prepare **Lab 4 — SSH Trust Setup**. Both the client and the training server are
+Prepare **Lab 6 — SSH Trust Setup**. Both the client and the training server are
 inside the isolated learner container; the server listens on port 2222.
 
 ```bash
@@ -72,7 +72,7 @@ Teaching beat: compare the server fingerprint before accepting it; the private k
 
 ## Demo 4 — Filter logs toward a question (7 min)
 
-Keep Lab 4 loaded so the SSH service exists, then create a known event:
+Keep Lab 6 loaded so the SSH service exists, then create a known event:
 
 ```bash
 sudo systemctl restart ssh

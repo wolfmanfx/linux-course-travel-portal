@@ -1,494 +1,527 @@
 # Linux Foundations — Participant Lab Guide
 
-Six guided labs · 180 minutes total · Ubuntu 24.04 LTS in Multipass
+Eight guided incidents · 180 minutes total · Ubuntu 24.04 LTS in the browser
 
 ## Before you begin
 
-You need:
+Open the seat link supplied by the instructor. It works from Safari, Chrome,
+Edge, or Firefox on macOS, Windows, and iOS. The terminal runs in an isolated
+Linux system container; host commands are not required for the primary lab
+path.
 
-- macOS 10.15+ (Intel or Apple silicon), or Windows 10/11
-- administrator rights to install Multipass
-- at least 10 GB free disk space and 2 GB free RAM
-- internet access for the VM image and Ubuntu packages
-- a terminal on the host: Terminal/iTerm on macOS, PowerShell on Windows
+Each lab starts from a prepared state. Select the lab, choose **Prepare / reset
+this lab**, complete the tasks, and choose **Check my work**. Preparing a lab
+recreates only your assigned seat and permanently discards that seat's current
+lab state.
 
-Install Multipass from the official Canonical installer. On Windows Pro/Enterprise, Multipass can use Hyper-V. Windows Home learners should install VirtualBox and configure Multipass to use it before class.
+Use the same operating loop throughout:
 
-### Two prompts, two worlds
+1. Locate the host, user, directory, and target.
+2. Predict the state you expect.
+3. Make one narrow change.
+4. Observe output, exit status, and logs.
+5. Verify under the identity and interface that matter.
 
-Commands beginning with `multipass` or `ssh` run on your **host** (macOS or Windows). Commands beginning with `sudo`, `ls`, `cd`, or `systemctl` run **inside Linux** after `multipass shell linux-course`.
+When requesting help, show `whoami`, `hostname`, `pwd`, the exact failing
+command, and the unchanged error output.
 
 ---
 
-## Lab 1 — Launch and inspect your Linux VM (25 min)
+## Lab 1 — System Orientation (15 min)
 
-### Goal
+### Mission
 
-Create a disposable Ubuntu VM, enter its shell, and record enough system information to identify where you are.
+You inherited an unfamiliar Linux seat. Produce two evidence files that prove
+which user space and kernel you are operating and where common system data
+belongs.
 
-### 1. Verify the host tool
-
-Run in macOS Terminal or Windows PowerShell:
-
-```text
-multipass version
-```
-
-If Windows reports that no driver is available and you use VirtualBox:
-
-```text
-multipass set local.driver=virtualbox
-```
-
-### 2. Launch the VM
-
-The command is identical on both host platforms:
-
-```text
-multipass launch 24.04 --name linux-course --cpus 2 --memory 2G --disk 10G
-multipass list
-multipass info linux-course
-```
-
-### 3. Enter Linux
-
-```text
-multipass shell linux-course
-```
-
-Your prompt should now contain the VM name. Confirm your identity and operating system:
+### 1. Establish context
 
 ```bash
 whoami
 hostname
+pwd
+printf 'HOME=%s\n' "$HOME"
+```
+
+### 2. Separate distribution from kernel
+
+```bash
 cat /etc/os-release
 uname -r
-pwd
+uname -m
+ps -p 1 -o pid,comm,args=
 ```
 
-### Checkpoint
+`/etc/os-release` describes the installed user space. `uname` asks the running
+kernel. In a system container those facts come from different layers.
 
-You can explain these three facts:
+### 3. Build the profile
 
-1. The host is macOS or Windows.
-2. The guest is Ubuntu Linux.
-3. The Linux kernel version comes from `uname -r`; distribution details come from `/etc/os-release`.
-
-### Recovery
-
-If the VM exists but is stopped:
+Create `~/system-profile.txt` with these keys and values observed on your seat:
 
 ```text
-multipass start linux-course
-multipass shell linux-course
+USER=learner
+DISTRO=Ubuntu
+INIT=systemd
+KERNEL=<the output of uname -r>
+ARCH=<the output of uname -m>
 ```
 
-If launch fails, capture `multipass version`, `multipass get local.driver`, and the exact error before changing anything.
+One safe construction pattern is:
+
+```bash
+. /etc/os-release
+printf 'USER=%s\nDISTRO=%s\nINIT=%s\nKERNEL=%s\nARCH=%s\n' \
+  "$(whoami)" "$NAME" "$(ps -p 1 -o comm=)" "$(uname -r)" "$(uname -m)" \
+  > ~/system-profile.txt
+```
+
+### 4. Map filesystem purposes
+
+Create `~/path-map.txt` containing:
+
+```text
+CONFIG=/etc
+LOGS=/var/log
+RUNTIME=/run
+```
+
+Verify the paths and both files:
+
+```bash
+test -d /etc && test -d /var/log && test -d /run
+cat ~/system-profile.txt ~/path-map.txt
+```
+
+### Explain before checking
+
+- Which command identifies Ubuntu?
+- Which command identifies the kernel?
+- Why can those two answers have different version numbers?
 
 ---
 
-## Lab 2 — Navigate and manipulate files safely (35 min)
+## Lab 2 — Filesystem & Links (25 min)
 
-### Goal
+### Mission
 
-Build a small workspace using relative and absolute paths, then copy, move, and remove files without losing track of location.
+Organize the prepared inbox under `~/projects/linux-course`, then demonstrate
+the different semantics of a copy, a hard link, and a symbolic link.
 
-Run everything in this lab inside Linux.
-
-### 1. Explore the filesystem
+### 1. Inspect before changing
 
 ```bash
+whoami
 pwd
-ls -la
-ls /
-cd /var/log
-pwd
-ls -lh | head
-cd ~
+ls -la ~/inbox
+file ~/inbox/*
+realpath ~/inbox/*
 ```
 
-Identify `/etc`, `/home`, `/var`, `/tmp`, and `/usr` in the output of `ls /`.
+### 2. Build and populate the tree
 
-### 2. Create a workspace
+Create `notes`, `archive`, and `links` in one project directory. Copy the
+welcome note and move the draft.
 
 ```bash
-mkdir -p ~/linux-course/{notes,archive,data}
-cd ~/linux-course
-touch notes/day1.txt
-printf 'Linux keeps configuration under /etc\n' > notes/day1.txt
-printf 'The journal is queried with journalctl\n' >> notes/day1.txt
-cat notes/day1.txt
+p="$HOME/projects/linux-course"
+mkdir -p "$p"/{notes,archive,links}
+cp ~/inbox/welcome.txt "$p/notes/welcome.txt"
+mv ~/inbox/draft.txt "$p/archive/draft.txt"
 ```
 
-### 3. Copy and move with verification
+Verify that `welcome.txt` still exists in the inbox while `draft.txt` does not.
+
+### 3. Create a hard link
 
 ```bash
-cp notes/day1.txt archive/day1.backup
-cp -i notes/day1.txt archive/day1.backup
-mv archive/day1.backup archive/day1.txt
-find . -maxdepth 2 -type f -print
+ln "$p/notes/welcome.txt" "$p/notes/welcome-hard.txt"
+ls -li "$p/notes"
 ```
 
-The `-i` option asks before overwriting. For important work, verify the destination before deleting the source.
+The two names must display the same inode number. A second `cp` would produce
+the same bytes but a different inode and will not pass the checker.
 
-### 4. Remove the safe way
+### 4. Create a relative symbolic link
+
+From the `links` directory, the target is `../notes/welcome.txt`:
 
 ```bash
-touch data/disposable.txt
-ls -l data/disposable.txt
-rm -i data/disposable.txt
-rmdir data
+ln -s ../notes/welcome.txt "$p/links/latest-note"
+readlink "$p/links/latest-note"
+cat "$p/links/latest-note"
 ```
 
-Avoid `rm -rf` until you can state exactly what every path expands to.
-
-### Challenge
-
-From `~/linux-course`, create `notes/commands.txt` containing only the lines from `notes/day1.txt` that include the letter `j`:
+### 5. Verify the final state
 
 ```bash
-grep 'j' notes/day1.txt > notes/commands.txt
-cat notes/commands.txt
+find "$p" -maxdepth 2 -printf '%y %p -> %l\n' | sort
+cat "$p/notes/welcome.txt" "$p/archive/draft.txt"
 ```
 
-### Checkpoint
+### Stretch
 
-```bash
-find ~/linux-course -maxdepth 2 -type f -printf '%P\n' | sort
-```
-
-Expected files:
-
-```text
-archive/day1.txt
-notes/commands.txt
-notes/day1.txt
-```
+Rename `welcome.txt` and test both links. Explain why the hard link still works
+and the symbolic link becomes dangling.
 
 ---
 
-## Lab 3 — Install software and edit text (25 min)
+## Lab 3 — Editor & Text Evidence (20 min)
 
-### Goal
+### Mission
 
-Use APT intentionally, inspect what was installed, and make a small edit with Nano.
+Prepare `app.conf` for production and reduce two logs into small evidence files
+that another operator can review.
 
-### 1. Refresh package metadata
+### 1. Make a safe terminal edit
 
 ```bash
+cat -n ~/app.conf
+nano ~/app.conf
+```
+
+Change the file to these exact settings:
+
+```text
+mode=production
+workers=4
+log_level=warning
+```
+
+In Nano, `Ctrl+O` writes, Enter confirms the filename, and `Ctrl+X` exits.
+Verify the result and check for duplicate lines:
+
+```bash
+cat -n ~/app.conf
+sort ~/app.conf | uniq -d
+```
+
+### 2. Build the status pipeline in stages
+
+```bash
+head ~/access.log
+awk '{print $4}' ~/access.log
+awk '{print $4}' ~/access.log | sort
+awk '{print $4}' ~/access.log | sort | uniq -c
+```
+
+Normalize the final output to `STATUS COUNT` and save it:
+
+```bash
+awk '{print $4}' ~/access.log \
+  | sort \
+  | uniq -c \
+  | awk '{print $2, $1}' \
+  > ~/status-counts.txt
+cat ~/status-counts.txt
+```
+
+### 3. Extract structured errors
+
+```bash
+grep '^level=ERROR ' ~/application.log > ~/errors.txt
+cat ~/errors.txt
+wc -l ~/errors.txt
+```
+
+The count must be two. If a command fails, capture its diagnostic with
+`2>~/command-error.txt` instead of suppressing it.
+
+### Explain before checking
+
+Describe what each pipeline stage receives and emits. In particular, explain
+why `sort` must precede `uniq -c`.
+
+---
+
+## Lab 4 — Package Lifecycle (20 min)
+
+### Mission
+
+Install `tree` from the configured Ubuntu repositories and connect four pieces
+of evidence: package state, executable discovery, file ownership, and behavior.
+
+### 1. Inspect the candidate
+
+```bash
+command -v tree || echo 'tree is missing'
 sudo apt update
 apt-cache policy tree
 ```
 
-`apt update` refreshes the package index; it does not upgrade installed packages.
+`apt update` refreshes repository metadata; it installs no application by
+itself.
 
-### 2. Install tools
-
-```bash
-sudo apt install -y tree jq
-tree --version
-jq --version
-dpkg -L tree | head
-```
-
-### 3. Edit a file with Nano
+### 2. Install and inspect
 
 ```bash
-nano ~/linux-course/notes/day1.txt
+sudo apt install tree
+dpkg-query -W -f='${Status}\n' tree
+command -v tree
+dpkg -S /usr/bin/tree
 ```
 
-Add this line:
+### 3. Create package evidence
+
+Create `~/package-report.txt` containing exactly:
 
 ```text
-systemctl controls systemd units.
+PACKAGE=tree
+STATUS=install ok installed
+BINARY=/usr/bin/tree
+OWNER=tree
 ```
 
-Save with `Ctrl+O`, press Enter, and exit with `Ctrl+X`. Then verify:
+Then prove behavior:
 
 ```bash
-tail -n 3 ~/linux-course/notes/day1.txt
+tree -d ~/package-lab > ~/tree-report.txt
+cat ~/package-report.txt ~/tree-report.txt
 ```
 
-### 4. Find the package transaction log
+### Stretch
 
-```bash
-sudo tail -n 20 /var/log/apt/history.log
-```
-
-### Checkpoint
-
-You can distinguish `apt update`, `apt install`, and `apt remove`, and you can save and exit Nano without closing the terminal.
+Use `dpkg -L tree`, `apt show tree`, and `/var/log/apt/history.log` to answer:
+which files came from the package, which version was selected, and when the
+transaction occurred?
 
 ---
 
-## Lab 4 — Build a shared directory with correct permissions (35 min)
+## Lab 5 — Permission Incident (30 min)
 
-### Goal
+### Mission
 
-Create a realistic team share where members can collaborate and new files inherit the team group.
+Alice and Bob must collaborate in `/srv/team-share`; outsider must remain
+blocked. Existing content needs a safe group mode, and new files must inherit
+`webteam`.
 
-### 1. Create users and a group
-
-```bash
-sudo groupadd courseops
-sudo useradd -m -s /bin/bash alice
-sudo useradd -m -s /bin/bash bob
-sudo usermod -aG courseops alice
-sudo usermod -aG courseops bob
-getent group courseops
-```
-
-### 2. Create the team directory
+### 1. Inspect identity and every path component
 
 ```bash
-sudo install -d -o root -g courseops -m 2770 /srv/course-share
-stat -c '%A  %a  %U:%G  %n' /srv/course-share
+getent group webteam
+id alice
+id bob
+id outsider
+namei -l /srv/team-share/checklist.txt
+stat -c '%U %G %A %a %n' /srv/team-share /srv/team-share/checklist.txt
 ```
 
-`2770` means setgid + full owner/group access + no access for others. Setgid on a directory makes new files inherit the directory group.
-
-### 3. Test as two users
+### 2. Repair the shared state
 
 ```bash
-sudo -u alice -H bash -lc 'echo "created by alice" > /srv/course-share/status.txt'
-sudo -u bob -H bash -lc 'cat /srv/course-share/status.txt'
-ls -l /srv/course-share/status.txt
+sudo chown -R root:webteam /srv/team-share
+sudo chmod 2770 /srv/team-share
+sudo chmod 0660 /srv/team-share/checklist.txt
 ```
 
-### 4. Apply a least-privilege file mode
+Interpret `2770`: setgid plus `rwxrwx---`. The setgid bit makes new children
+inherit the directory group.
+
+### 3. Prove inheritance and collaboration
 
 ```bash
-sudo chown alice:courseops /srv/course-share/status.txt
-sudo chmod 640 /srv/course-share/status.txt
-stat -c '%A  %a  %U:%G  %n' /srv/course-share/status.txt
+sudo -u alice sh -c 'echo alice-was-here > /srv/team-share/alice.txt'
+sudo -u bob sh -c 'echo bob-reviewed >> /srv/team-share/checklist.txt'
+stat -c '%U %G %A %a %n' /srv/team-share/*
+cat /srv/team-share/checklist.txt
 ```
 
-Interpret `640`: owner reads/writes, group reads, others have no access.
-
-### Challenge: repair a broken access case
-
-Break the group access, observe the failure, and repair it:
+### 4. Test both sides of the policy
 
 ```bash
-sudo chown alice:alice /srv/course-share/status.txt
-sudo chmod 600 /srv/course-share/status.txt
-sudo -u bob -H cat /srv/course-share/status.txt
+sudo -u alice test -w /srv/team-share && echo ALICE_OK
+sudo -u bob test -w /srv/team-share && echo BOB_OK
+sudo -u outsider test -w /srv/team-share || echo OUTSIDER_BLOCKED
 ```
 
-Use `ls -l`, `id bob`, `chown`, and `chmod` to make the final read succeed while keeping “others” at zero permissions.
+A successful write proves the positive case. The outsider test proves least
+privilege. Testing as the sudo-capable `learner` user proves neither.
 
-One valid repair:
+### Recovery question
 
-```bash
-sudo chown alice:courseops /srv/course-share/status.txt
-sudo chmod 640 /srv/course-share/status.txt
-```
-
-### Checkpoint
-
-```bash
-namei -l /srv/course-share/status.txt
-```
-
-You can explain why access depends on every directory in the path, not only the final file.
+If Bob is in `webteam` but cannot access the file, check directory traversal,
+the file group, and the file group mode separately before changing anything.
 
 ---
 
-## Lab 5 — Connect over SSH with your own key (30 min)
+## Lab 6 — SSH Trust Setup (25 min)
 
-### Goal
+### Mission
 
-Create an Ed25519 client key on the host, install only the public key in Linux, verify the server identity, and connect through a named client profile.
+Configure strict, key-only access to `operator@localhost:2222` through the alias
+`training-server`. Establish server identity before the final connection.
 
-### 1. Prepare the account inside Linux
-
-From the Multipass shell:
-
-```bash
-sudo useradd -m -s /bin/bash trainee
-sudo systemctl enable --now ssh
-sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
-exit
-```
-
-Record the server fingerprint. You are now back at the host prompt.
-
-### 2. Generate a key on the host
-
-Works in macOS Terminal and modern Windows PowerShell:
-
-```text
-ssh-keygen -t ed25519 -a 64 -f "$HOME/.ssh/linux_course_ed25519" -C "linux-course"
-```
-
-Choose a passphrase. The private key has no `.pub` suffix and must stay on the host.
-
-### 3. Transfer only the public key
-
-```text
-multipass transfer "$HOME/.ssh/linux_course_ed25519.pub" linux-course:/tmp/trainee.pub
-multipass shell linux-course
-```
-
-Inside Linux:
+### 1. Protect and create client identity
 
 ```bash
-sudo install -d -m 700 -o trainee -g trainee /home/trainee/.ssh
-sudo install -m 600 -o trainee -g trainee /tmp/trainee.pub /home/trainee/.ssh/authorized_keys
-sudo rm /tmp/trainee.pub
-hostname -I
-exit
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+test ! -e ~/.ssh/id_ed25519
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -C 'linux-course'
+chmod 600 ~/.ssh/id_ed25519
 ```
 
-Record the first VM IP address.
+Use an empty passphrase only for this disposable training key.
 
-### 4. Connect and verify identity
+### 2. Record server identity
 
-Replace `VM_IP`:
-
-```text
-ssh -i "$HOME/.ssh/linux_course_ed25519" trainee@VM_IP
+```bash
+ssh-keyscan -p 2222 localhost >> ~/.ssh/known_hosts
+ssh-keygen -F '[localhost]:2222'
 ```
 
-At the first connection, compare the displayed fingerprint with the fingerprint recorded inside the VM. Accept only if they match.
+The brackets are required for a host key associated with a non-default port.
 
-### 5. Create a client profile
+### 3. Bootstrap authorization
 
-Edit `$HOME/.ssh/config` on the host with this block:
+```bash
+ssh-copy-id -o StrictHostKeyChecking=yes \
+  -i ~/.ssh/id_ed25519.pub \
+  -p 2222 operator@localhost
+```
+
+The temporary bootstrap password is `training`. Only the public key is copied.
+
+### 4. Create the strict client profile
+
+Create `~/.ssh/config`:
 
 ```sshconfig
-Host linux-course
-    HostName VM_IP
-    User trainee
-    IdentityFile ~/.ssh/linux_course_ed25519
+Host training-server
+    HostName localhost
+    Port 2222
+    User operator
+    IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
-    StrictHostKeyChecking accept-new
-    ServerAliveInterval 60
+    StrictHostKeyChecking yes
 ```
-
-After the host key is recorded and verified, you may change `accept-new` to `yes` for stricter behavior.
-
-Test:
-
-```text
-ssh linux-course
-```
-
-### Windows note
-
-Windows OpenSSH uses the same client configuration syntax. If `ssh` is missing, install the Windows “OpenSSH Client” optional feature before class.
-
-### Checkpoint
-
-Inside the SSH session:
 
 ```bash
-whoami
-hostname
-echo "$SSH_CONNECTION"
+chmod 600 ~/.ssh/config
+ssh -o BatchMode=yes training-server 'id && hostname'
 ```
 
-The user is `trainee`, the host is the VM, and `$SSH_CONNECTION` shows the client/server addresses and ports.
+`BatchMode=yes` makes the test fail instead of falling back to a password
+prompt.
+
+### Recovery
+
+Use `ssh -G training-server` to inspect computed client settings and
+`ssh -vv training-server` to see host-key and authentication decisions.
 
 ---
 
-## Lab 6 — Repair a failed systemd service from its logs (30 min)
+## Lab 7 — Journal Investigation (20 min)
 
-### Goal
+### Mission
 
-Install a deliberately broken service, diagnose it with a repeatable command sequence, repair the cause, and verify the endpoint.
+Explain why `course-log-generator.service` failed. Preserve the scoped journal
+evidence and submit exact unit state, result, incident, and exit code facts.
 
-Run this lab inside Linux as your original `ubuntu` user (`multipass shell linux-course`).
-
-### 1. Install the broken unit
+### 1. Compare human and machine-readable state
 
 ```bash
-sudo tee /etc/systemd/system/course-web.service >/dev/null <<'UNIT'
-[Unit]
-Description=Linux Course Demo Web Service
-After=network.target
-
-[Service]
-Type=simple
-User=courseapp
-WorkingDirectory=/srv/course-web
-ExecStart=/usr/bin/python3 -m http.server 8080
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-UNIT
-
-sudo systemctl daemon-reload
-sudo systemctl start course-web
+systemctl status course-log-generator.service --no-pager
+systemctl show course-log-generator.service \
+  -p ActiveState -p Result -p ExecMainStatus
 ```
 
-The start should fail because the declared user and working directory do not exist.
-
-### 2. Diagnose before changing anything
+### 2. Scope and preserve the journal
 
 ```bash
-systemctl status course-web --no-pager
-sudo journalctl -u course-web --since '-10 min' --no-pager
-systemctl cat course-web
+journalctl -u course-log-generator.service -b --no-pager
+journalctl -u course-log-generator.service -b --no-pager \
+  > ~/journal-evidence.txt
 ```
 
-Write down:
-
-- the unit state
-- the first useful error message
-- the configuration line most likely connected to it
-
-### 3. Repair the prerequisites
+### 3. Reduce noise after scoping
 
 ```bash
-sudo useradd --system --home /srv/course-web --shell /usr/sbin/nologin courseapp
-sudo install -d -o courseapp -g courseapp -m 750 /srv/course-web
-echo '<h1>Linux course service is healthy</h1>' | sudo tee /srv/course-web/index.html >/dev/null
+journalctl -u course-log-generator.service \
+  --since '-10 minutes' -o short-iso --no-pager
+grep -E 'INCIDENT|exited' ~/journal-evidence.txt
+```
+
+### 4. Submit the explanation
+
+Create `~/lab-answer.txt`:
+
+```text
+UNIT=course-log-generator.service
+ACTIVE_STATE=failed
+RESULT=exit-code
+INCIDENT=DISK_THRESHOLD
+EXIT_CODE=42
+```
+
+The incident line is the application cause. The failed state and exit result
+are systemd's observations of the consequence.
+
+---
+
+## Lab 8 — Broken Service Capstone (25 min)
+
+### Mission
+
+`course-web.service` cannot enter its configured working directory. Diagnose
+before changing, repair only the missing prerequisites, and verify systemd state
+and HTTP behavior independently.
+
+### 1. Capture evidence
+
+```bash
+systemctl status course-web.service --no-pager
+systemctl cat course-web.service
+journalctl -u course-web.service -b --no-pager
+```
+
+Connect `status=200/CHDIR` to the unit's `WorkingDirectory` value. Do not edit
+the unit when its declared intent is already correct.
+
+### 2. Repair the prerequisites
+
+```bash
+sudo install -d -o courseapp -g courseapp -m 0755 /srv/course-web
+printf 'Linux course service is healthy.\n' \
+  | sudo tee /srv/course-web/index.html >/dev/null
 sudo chown courseapp:courseapp /srv/course-web/index.html
 ```
 
-### 4. Restart and verify
+### 3. Start now and at boot
 
 ```bash
-sudo systemctl restart course-web
-systemctl is-active course-web
-systemctl status course-web --no-pager
-curl -fsS http://localhost:8080
-sudo journalctl -u course-web -n 20 --no-pager
+sudo systemctl enable --now course-web.service
 ```
 
-Enable the service for future boots:
+No `daemon-reload` is needed because the unit file did not change.
+
+### 4. Verify four independent layers
 
 ```bash
-sudo systemctl enable course-web
-systemctl is-enabled course-web
+systemctl is-active course-web.service
+systemctl is-enabled course-web.service
+ss -ltnp | grep 8088
+curl -fsS http://127.0.0.1:8088/
 ```
 
-### Checkpoint
+### Peer explanation
 
-You used this troubleshooting loop:
+Explain:
 
-1. Observe state.
-2. Read unit-specific logs.
-3. Inspect effective configuration.
-4. Change one cause.
-5. Restart and verify both state and behavior.
+1. the initial state and exact symptom
+2. the journal evidence that identified the cause
+3. why the repair was narrower than editing the unit
+4. what proves current state, future state, network state, and application behavior
 
-### Optional cleanup
+A green checker confirms observable state. Your explanation demonstrates that
+you can reproduce the reasoning.
 
-```bash
-sudo systemctl disable --now course-web
-sudo rm /etc/systemd/system/course-web.service
-sudo systemctl daemon-reload
-```
+---
 
-To remove the entire disposable VM from the host after the course:
+## Offline fallback
 
-```text
-multipass delete linux-course
-multipass purge
-```
-
-This permanently deletes the VM. Keep it if you want to continue practicing.
-
+If the browser platform is unavailable, the instructor can provide the
+repository's macOS or Windows host launcher. The learner commands inside Ubuntu
+are the same; only seat preparation and reset move to the host scripts under
+`browser-lab-platform/host/`.

@@ -1,5 +1,5 @@
 window.COURSE_CONTENT = {
-  "generatedAt": "2026-07-18T07:35:21.143Z",
+  "generatedAt": "2026-07-18T09:10:26.024Z",
   "narration": {
     "language": "en",
     "manifest": "media/slide-narration-manifest.json",
@@ -7,9 +7,9 @@ window.COURSE_CONTENT = {
     "fullDeckAudio": "media/linux-foundations-full-deck.en.mp3",
     "timing": {
       "declaredTheoryTargetMinutes": 180,
-      "plannedTheoryDemoMinutes": 194,
+      "plannedTheoryDemoMinutes": 180,
       "explicitSlide1To30ScheduleMinutes": 194,
-      "explicitScheduleOverDeclaredMinutes": 14,
+      "explicitScheduleOverDeclaredMinutes": 0,
       "plannedLabMinutes": 180,
       "measuredSpokenAudioSeconds": 1566.06,
       "withinSlidePauseSeconds": 24.75,
@@ -19,8 +19,9 @@ window.COURSE_CONTENT = {
       "totalInterSlideGapSeconds": 74,
       "fullDeckDurationSeconds": 1664.81,
       "declaredTheoryTargetMinusSpokenSeconds": 9233.94,
-      "explicitScheduleMinusSpokenSeconds": 10073.94,
-      "explanation": "Spoken narration reads the canonical presenter notes without padding. Live command execution, demonstrations, questions, discussion, and learner activities occupy the remaining scheduled time. The explicit slide 1-30 timings are preserved even though they exceed the declared theory target."
+      "explicitScheduleMinusSpokenSeconds": 9233.94,
+      "explanation": "Slides 1–90 declare exactly 180 minutes. Spoken narration remains a measured subset; live commands, demonstrations, questions, discussion, and learner activities occupy the remaining scheduled time.",
+      "explicitSlide1To90ScheduleMinutes": 180
     },
     "complete": false,
     "availableSlides": 38
@@ -90,7 +91,7 @@ window.COURSE_CONTENT = {
       "number": 4,
       "image": "assets/slides/slide-4.png",
       "title": "COURSE MAP",
-      "notes": "Timing: 2 minutes.\n\nExplain the exact split: 180 minutes of concepts and instructor demonstrations, then 180 minutes of guided participant work. Demonstrations belong to the teaching half because learners are predicting and observing rather than driving.\n\nThe six labs are independent, resettable scenarios in isolated Incus containers. Learners enter through a browser terminal, make real system changes, and use “Check my work” to verify state.\n\nIf the venue gives only six wall-clock hours including breaks, use the compressed option in the instructor runbook: 165 minutes on each side and remove optional discussion prompts equally. Do not cut lab verification steps.\n\nTransition: “Next: Linux is the kernel; a usable system is a stack.”",
+      "notes": "Timing: 2 minutes.\n\nExplain the exact split: 180 minutes of concepts and instructor demonstrations, then 180 minutes of guided participant work. Demonstrations belong to the teaching half because learners are predicting and observing rather than driving.\n\nThe eight labs are independent, resettable scenarios in isolated Incus containers. Learners enter through a browser terminal, make real system changes, and use “Check my work” to verify state.\n\nIf the venue gives only six wall-clock hours including breaks, use the compressed option in the instructor runbook: 165 minutes on each side and remove optional discussion prompts equally. Do not cut lab verification steps.\n\nTransition: “Next: Linux is the kernel; a usable system is a stack.”",
       "narration": {
         "number": 4,
         "title": "Practice gets exactly half of the workshop",
@@ -1193,7 +1194,7 @@ window.COURSE_CONTENT = {
       "number": 70,
       "image": "assets/slides/slide-70.png",
       "title": "Put safe SSH defaults in a named client profile",
-      "notes": "Timing: 2 minutes.\n\nWalk line by line. Host is the alias. HostName and Port identify the server. User and IdentityFile remove ambiguity. IdentitiesOnly prevents an agent from offering many unrelated keys and hitting server limits. ServerAliveInterval helps detect dead sessions.\n\nIn Lab 4 the training server is localhost on port 2222 because both SSH endpoints live inside the isolated learner container. For production, the same profile points to a remote DNS name or address.\n\nExplain StrictHostKeyChecking carefully: accept-new is convenient in a disposable lab but still rejects changed keys. Managed environments should pre-provision known_hosts or use yes with a trusted onboarding process.\n\nTransition: “Next: SSH uses the first value obtained.”",
+      "notes": "Timing: 2 minutes.\n\nWalk line by line. Host is the alias. HostName and Port identify the server. User and IdentityFile remove ambiguity. IdentitiesOnly prevents an agent from offering many unrelated keys and hitting server limits. ServerAliveInterval helps detect dead sessions.\n\nIn Lab 6 the training server is localhost on port 2222 because both SSH endpoints live inside the isolated learner container. For production, the same profile points to a remote DNS name or address.\n\nExplain StrictHostKeyChecking carefully: accept-new is convenient in a disposable lab but still rejects changed keys. Managed environments should pre-provision known_hosts or use yes with a trusted onboarding process.\n\nTransition: “Next: SSH uses the first value obtained.”",
       "narration": {
         "number": 70,
         "audioUrl": "",
@@ -1219,7 +1220,7 @@ window.COURSE_CONTENT = {
       "number": 72,
       "image": "assets/slides/slide-72.png",
       "title": "Live demo: verify before you trust",
-      "notes": "Timing: 4 minutes.\n\nLive demo. Prepare Lab 4 in the instructor demo seat. Generate a dedicated Ed25519 client key inside the learner session, record the training server host key for port 2222, and show the bracketed known_hosts entry.\n\nUse ssh-copy-id with the temporary bootstrap password training. Emphasise that only the public key is installed. Then connect with BatchMode enabled; success proves no password prompt was required. Run id and hostname to verify the remote identity.\n\nNever display a real personal key or reuse a production credential.\n\nTransition: “Next: Test SSH failures one layer at a time.”",
+      "notes": "Timing: 4 minutes.\n\nLive demo. Prepare Lab 6 in the instructor demo seat. Generate a dedicated Ed25519 client key inside the learner session, record the training server host key for port 2222, and show the bracketed known_hosts entry.\n\nUse ssh-copy-id with the temporary bootstrap password training. Emphasise that only the public key is installed. Then connect with BatchMode enabled; success proves no password prompt was required. Run id and hostname to verify the remote identity.\n\nNever display a real personal key or reuse a production credential.\n\nTransition: “Next: Test SSH failures one layer at a time.”",
       "narration": {
         "number": 72,
         "audioUrl": "",
@@ -1466,7 +1467,7 @@ window.COURSE_CONTENT = {
       "number": 91,
       "image": "assets/slides/slide-91.png",
       "title": "HANDS-ON BLOCK",
-      "notes": "Timing: 3 minutes of lab-block orientation; this time is included in Lab 1.\n\nGive each learner or pair the assigned seat link. The page contains the task brief, a real ttyd terminal, Reset, and Check my work. The seat token prevents accidental cross-seat access.\n\nPairing is optional but recommended: one driver types, one navigator reads the next step and predicts outcomes; swap after each lab.\n\nState the support rule: when blocked, show pwd, whoami, recent history, and the exact repeated failing command. Reset only when the task calls for a fresh baseline.\n\nStart the 25-minute Lab 1 timer now.",
+      "notes": "Timing: 3 minutes, included in Lab 1.\n\nGive each learner or pair the assigned seat link. The practical block now contains eight incidents totaling exactly 180 minutes. The page contains a task brief, a real ttyd terminal, Prepare / reset, and Check my work.\n\nPairing is optional: the driver predicts and types; the navigator checks the expected state and reads the checker output. Swap after each lab.\n\nState the support rule: when blocked, show whoami, hostname, pwd, the exact repeated command, and one relevant piece of evidence. Start the 15-minute Lab 1 timer now.",
       "narration": {
         "number": 91,
         "audioUrl": "",
@@ -1479,7 +1480,7 @@ window.COURSE_CONTENT = {
       "number": 92,
       "image": "assets/slides/slide-92.png",
       "title": "HANDS-ON",
-      "notes": "Lab facilitation: 50 minutes total.\n\nLab 1 is filesystem fieldwork. Learners orient with pwd and whoami, inspect the prepared inbox, then create, copy, and move files into the required tree. The checker verifies paths and file content.\n\nLab 2 installs tree with APT and turns an access log into status-code counts. Ask learners to explain each pipeline stage before they run it. The final evidence must show exactly three 404 responses.\n\nAt minute 20 and minute 45, give a five-minute warning. Fast finishers should produce the same counts with a different pipeline and compare readability.",
+      "notes": "Lab facilitation: 40 minutes total.\n\nLab 1, System Orientation, takes 15 minutes. Learners record identity, Ubuntu user space, kernel release, architecture, PID 1, and three filesystem landmarks. Insist that every line in the profile comes from the current seat.\n\nLab 2, Filesystem & Links, takes 25 minutes. Learners copy and move prepared files, then create both a hard link and a relative symbolic link. The checker compares inode identity and the symbolic link's stored target, so a second copy will not pass as a hard link.\n\nGive a five-minute warning at minute 10 and minute 35. Fast finishers should rename welcome.txt and predict which link survives before testing.",
       "narration": {
         "number": 92,
         "audioUrl": "",
@@ -1492,7 +1493,7 @@ window.COURSE_CONTENT = {
       "number": 93,
       "image": "assets/slides/slide-93.png",
       "title": "HANDS-ON",
-      "notes": "Lab facilitation: 65 minutes total.\n\nLab 3 is a permission incident. The target is deliberate: Alice and Bob can write, outsider cannot, and new files inherit webteam. Require both the positive and negative test; a single successful write does not prove least privilege.\n\nLab 4 builds SSH trust entirely inside the learner container. Learners generate an Ed25519 key, record the host key, authorize only the public key, and connect through a named client profile. The first password is training; the verified outcome is key-only login.\n\nAt minute 55, give ten minutes remaining. Use namei -l or ssh -vv only after the basic ownership, mode, and identity checks.",
+      "notes": "Lab facilitation: 40 minutes total.\n\nLab 3, Editor & Text Evidence, takes 20 minutes. Learners use nano for three exact configuration changes, count status codes with a staged pipeline, and extract exactly two structured ERROR records. Ask them to inspect each pipeline stage before redirecting.\n\nLab 4, Package Lifecycle, takes 20 minutes. Learners distinguish apt update from apt install, inspect the candidate, map /usr/bin/tree back to its owning package, and save both package state and command output.\n\nThe checkpoint is agreement across independent evidence sources: file content, pipeline result, dpkg state, executable discovery, file ownership, and behavior.",
       "narration": {
         "number": 93,
         "audioUrl": "",
@@ -1505,7 +1506,7 @@ window.COURSE_CONTENT = {
       "number": 94,
       "image": "assets/slides/slide-94.png",
       "title": "HANDS-ON",
-      "notes": "Lab facilitation: 65 minutes total.\n\nLab 5 begins with service status, then narrows the journal by unit and current boot. The learner records the first causal event and the non-zero exit code in lab-answer.txt. Do not reward random repair attempts; this lab is about evidence.\n\nLab 6 is the capstone. Learners inspect course-web, read the journal and unit definition, repair the missing document root, then enable and start the service. The final verification is threefold: is-active, is-enabled, and an HTTP response on port 8088.\n\nAt minute 55, give ten minutes remaining. Fast finishers should reset Lab 6 and explain the diagnosis before typing the repair.",
+      "notes": "Lab facilitation: 55 minutes total.\n\nLab 5, Permission Incident, takes 30 minutes. Learners inspect users, groups, parent directories, and numeric modes; repair the existing file and shared directory; prove setgid inheritance; and perform real positive and negative tests as Alice, Bob, and outsider. Do not accept chmod 777 or tests run only as learner.\n\nLab 6, SSH Trust Setup, takes 25 minutes. Learners protect key material, record the host key for the non-default port, authorize only the public key, pin a strict client profile, and prove BatchMode key-only login. The temporary password is training and is used only for bootstrap.",
       "narration": {
         "number": 94,
         "audioUrl": "",
@@ -1517,8 +1518,8 @@ window.COURSE_CONTENT = {
     {
       "number": 95,
       "image": "assets/slides/slide-95.png",
-      "title": "TROUBLESHOOTING",
-      "notes": "Timing: keep visible during support or use for a 3-minute regroup.\n\nIf several learners hit different failures, pause and apply the ladder to one example. Context first prevents solving the wrong machine, user, or directory. Inspect the target and effective configuration. Reproduce once to capture the symptom. Gather logs and status. Only then change one cause and repeat the same verification.\n\nThe phrase “before widening privilege” matters: sudo can bypass the intended identity and produce a false success. Likewise chmod 777 can erase the evidence of a group-design problem.\n\nTransition: return learners to their current lab with one requested evidence item.",
+      "title": "HANDS-ON",
+      "notes": "Lab facilitation: 45 minutes total.\n\nLab 7, Journal Investigation, takes 20 minutes. Learners compare the human status view with machine-readable systemctl show properties, scope the journal by unit and boot, preserve evidence, and submit five exact facts. The incident line is the cause; the failed unit state is a consequence.\n\nLab 8, Broken Service Capstone, takes 25 minutes. Learners capture status, journal, and unit configuration before changing anything; connect status=200/CHDIR to WorkingDirectory; create only the missing web root and health page; then verify active state, boot enablement, listening socket, and HTTP response.\n\nThe eight lab durations total 180 minutes: 15 + 25 + 20 + 20 + 30 + 25 + 20 + 25.",
       "narration": {
         "number": 95,
         "audioUrl": "",
@@ -1530,13 +1531,13 @@ window.COURSE_CONTENT = {
     {
       "number": 96,
       "image": "assets/slides/slide-96.png",
-      "title": "ASSESSMENT",
-      "notes": "Timing: 8 minutes at the end of labs.\n\nUse this as a peer assessment. Give pairs four minutes: Partner A explains the SSH chain, Partner B explains the service diagnosis, then each asks one question from the slide. Invite two concise reports.\n\nCorrect misconceptions directly: successful sudo access does not prove normal-user access; accepting an SSH fingerprint without comparison is trust-on-first-use, not verification; active service state does not prove application behavior; changing several things at once prevents causal confidence.\n\nTransition: “You do not need every command in memory—you need a map and a repeatable loop.”",
+      "title": "TROUBLESHOOT + ASSESS",
+      "notes": "Timing: use during support and reserve the final five minutes of Lab 8 for peer explanation.\n\nWhen a learner asks for help, walk down the five questions without taking the keyboard. Context prevents solving the wrong host, user, or directory. Target inspection shows current state. Reproducing the symptom preserves the exact failure. Logs and exit status identify the cause. One narrow change followed by the same test gives causal confidence.\n\nFor peer assessment, Partner A explains either the permission or SSH evidence chain. Partner B explains either the journal or systemd chain. A complete explanation names the initial state, the observation that mattered, the smallest change, and the final independent verification.\n\nCorrect common false positives: sudo success does not prove normal-user access; an accepted but unverified host key is not verified trust; active service state does not prove HTTP behavior; and a green checker does not explain why the solution works.",
       "narration": {
         "number": 96,
         "audioUrl": "",
         "measuredDurationSeconds": 0,
-        "plannedTiming": "8 minutes",
+        "plannedTiming": "",
         "pending": true
       }
     },
@@ -1544,7 +1545,7 @@ window.COURSE_CONTENT = {
       "number": 97,
       "image": "assets/slides/slide-97.png",
       "title": "Keep your seat link; keep practising the loop",
-      "notes": "Timing: 4 minutes.\n\nClose by resolving the opening promise. Learners can now orient themselves, control access, establish remote trust, and diagnose a service with evidence. Encourage immediate repetition while the command path is fresh.\n\nThe browser seat may be retired after the course, so keep the public course repository and solution-video links. Reset and solve Lab 6 again while the controller is still available. The Linux Upskill Challenge provides a free, open sequence for continued server practice.\n\nFinal sentence: “The command you forget can be looked up; the habit of verifying state is what makes you safe.”",
+      "notes": "Timing: 4 minutes.\n\nClose by resolving the opening promise. Learners can now orient themselves, control access, establish remote trust, and diagnose a service with evidence. Encourage immediate repetition while the command path is fresh.\n\nThe browser seat may be retired after the course, so keep the public course repository and solution-video links. Reset and solve Lab 8 again while the controller is still available. The Linux Upskill Challenge provides a free, open sequence for continued server practice.\n\nFinal sentence: “The command you forget can be looked up; the habit of verifying state is what makes you safe.”",
       "narration": {
         "number": 97,
         "audioUrl": "",
@@ -1557,7 +1558,7 @@ window.COURSE_CONTENT = {
       "number": 98,
       "image": "assets/slides/slide-98.png",
       "title": "REFERENCES",
-      "notes": "Use the repository SOURCES.md for full links, licenses, and retrieval dates. The delivery platform is built from Ubuntu Server, Incus system containers, ttyd browser terminals, Nginx, and a small Flask control API.\n\nThe slide system uses an original CodeRabbit-inspired palette and an original generated title illustration; it does not copy the CodeRabbit logo or product interface.\n\nThe platform source, operational runbooks, six lab setup/check scripts, Playwright solution recordings, and narration scripts live under browser-lab-platform/.",
+      "notes": "Use the repository SOURCES.md for full links, licenses, and retrieval dates. The delivery platform is built from Ubuntu Server, Incus system containers, ttyd browser terminals, Nginx, and a small Flask control API.\n\nThe slide system uses an original CodeRabbit-inspired palette and an original generated title illustration; it does not copy the CodeRabbit logo or product interface.\n\nThe platform source, operational runbooks, eight lab setup/check scripts, Playwright solution recordings, and narration scripts live under browser-lab-platform/.",
       "narration": {
         "number": 98,
         "audioUrl": "",
