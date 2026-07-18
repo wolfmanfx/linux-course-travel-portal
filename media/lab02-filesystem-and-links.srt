@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:19,620
+We inspect the inbox first, then create notes, archive, and links beneath one explicit project path. The variable keeps repeated destinations readable without changing their meaning.
+
+2
+00:00:19,970 --> 00:00:32,810
+cp preserves the welcome file at its source. mv relocates the draft, so the old draft path disappears. Those different source-side effects are part of the required final state.
+
+3
+00:00:33,160 --> 00:00:44,800
+ln without -s creates another name for the same inode. ls -li displays matching inode numbers, which proves this is a hard link rather than a second copy.
+
+4
+00:00:45,150 --> 00:00:56,410
+The symbolic link stores the relative target ../notes/welcome.txt. readlink proves the stored path, cat proves that it resolves, and find gives one final view of every object and link target.

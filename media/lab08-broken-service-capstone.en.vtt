@@ -1,0 +1,21 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:09.720
+The capstone starts with evidence. Status and the journal show status 200/CHDIR, which points to a working-directory failure before the Python process can start.
+
+2
+00:00:10.070 --> 00:00:17.070
+systemctl cat and show reveal the effective User, WorkingDirectory, and ExecStart.
+
+3
+00:00:17.420 --> 00:00:31.040
+The smallest repair is to create the missing web root with the service account's ownership and the intended mode.
+
+4
+00:00:31.390 --> 00:00:41.290
+We add the exact health page and assign it to courseapp. systemctl enable --now changes both current state and next-boot state without modifying the already-correct unit file.
+
+5
+00:00:41.640 --> 00:00:59.920
+Verification uses four independent views: active state, enabled state, the listening socket, and the HTTP response. The final stat output confirms that both directory and content ownership match the service identity.
