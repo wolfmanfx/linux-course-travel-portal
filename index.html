@@ -29,7 +29,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Temporary travel portal</p>
         <h1>Linux skills,<br><span>ready wherever you are.</span></h1>
-        <p class="lede">Review the full course deck, read the speaker notes, play every walkthrough in English or German, and download the material for offline use.</p>
+        <p class="lede">Review the full course deck, listen to the English slide narration, read the speaker notes, and play every English lab walkthrough online or offline.</p>
         <div class="hero-actions">
           <a class="button primary" href="#slides">Open slide deck</a>
           <a class="button secondary" href="#videos">Browse walkthroughs</a>
@@ -64,6 +64,27 @@
         </div>
       </div>
 
+      <section class="narration-overview" aria-labelledby="narrationHeading">
+        <div class="narration-copy">
+          <p class="eyebrow">English audio guide</p>
+          <h3 id="narrationHeading">Full-deck slide narration</h3>
+          <p id="timingExplanation">Loading the measured narration and schedule comparison…</p>
+          <audio id="fullDeckNarration" controls preload="metadata"></audio>
+          <div class="narration-links">
+            <a class="text-link" href="media/linux-foundations-full-deck.en.mp3" download>Download full-deck MP3</a>
+            <a class="text-link" href="media/slide-narration-manifest.json" download>Download timing manifest</a>
+          </div>
+        </div>
+        <div class="timing-grid" aria-label="Course duration audit">
+          <div><strong id="declaredTheoryMinutes">180 min</strong><span>declared theory target</span></div>
+          <div class="timing-warning"><strong id="explicitTheoryMinutes">194 min</strong><span>explicit slides 1–30 schedule</span></div>
+          <div><strong id="spokenNarrationMinutes">—</strong><span>measured spoken audio</span></div>
+          <div><strong id="plannedLabMinutes">180 min</strong><span>planned lab block</span></div>
+          <div><strong id="timingGapMinutes">—</strong><span>explicit schedule minus speech</span></div>
+          <div><strong id="fullDeckDuration">—</strong><span>continuous track with gaps</span></div>
+        </div>
+      </section>
+
       <div class="deck-shell">
         <div class="slide-stage">
           <img id="currentSlide" src="assets/slides/slide-1.png" alt="Course slide 1" width="1600" height="900">
@@ -72,6 +93,9 @@
         </div>
         <aside class="notes-panel" aria-live="polite">
           <div class="slide-counter"><span id="slidePosition">Slide 1 of 38</span><button id="fullscreenSlide" type="button">Full screen</button></div>
+          <h3>English narration</h3>
+          <audio id="slideNarration" controls preload="metadata"></audio>
+          <p class="narration-meta" id="slideNarrationMeta">Loading narration…</p>
           <h3>Speaker notes</h3>
           <div id="speakerNotes" class="speaker-notes">Loading speaker notes…</div>
         </aside>
@@ -84,9 +108,9 @@
       <div class="section-heading">
         <div>
           <p class="eyebrow">Solution walkthroughs</p>
-          <h2>Six labs, explained in English and German</h2>
+          <h2>Six labs, explained in English</h2>
         </div>
-        <p class="heading-note">Choose English or Deutsch in each walkthrough. Browser-safe single-language playback is provided alongside a downloadable dual-track master.</p>
+        <p class="heading-note">Every walkthrough uses the verified English narration, captions, transcript, and downloadable English-only MP4.</p>
       </div>
       <div class="video-grid" id="videoGrid"></div>
     </section>
@@ -105,6 +129,8 @@
         <a class="download-card" href="downloads/LAB_GUIDE.md" download><span>MD</span><strong>Participant lab guide</strong><small>All six guided exercises</small></a>
         <a class="download-card" href="downloads/INSTRUCTOR_RUNBOOK.md" download><span>MD</span><strong>Instructor runbook</strong><small>Timing, setup, and recovery</small></a>
         <a class="download-card" href="downloads/LIVE_DEMOS.md" download><span>MD</span><strong>Live demo guide</strong><small>Commands and talking points</small></a>
+        <a class="download-card" href="media/linux-foundations-full-deck.en.mp3" download><span>MP3</span><strong>Full-deck narration</strong><small>Continuous English slide audio</small></a>
+        <a class="download-card" href="media/slide-narration-manifest.json" download><span>JSON</span><strong>Duration audit</strong><small>Measured audio and planned timing</small></a>
       </div>
     </section>
   </main>
