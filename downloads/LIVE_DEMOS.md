@@ -61,14 +61,21 @@ inside the isolated learner container; the server listens on port 2222.
 mkdir -p ~/.ssh && chmod 700 ~/.ssh
 ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N '' -C 'linux-live-demo'
 chmod 600 ~/.ssh/id_ed25519
-ssh-keyscan -p 2222 localhost >> ~/.ssh/known_hosts
+ssh-keyscan -t ed25519 -p 2222 localhost > ~/course-host-key.scan
+expected="$(cat /etc/linux-course/ssh-host-ed25519.fingerprint)"
+observed="$(ssh-keygen -lf ~/course-host-key.scan -E sha256 | awk '{print $2}')"
+printf 'expected=%s\nobserved=%s\n' "$expected" "$observed"
+test "$observed" = "$expected"
+install -m 600 ~/course-host-key.scan ~/.ssh/known_hosts
 ssh-keygen -F '[localhost]:2222'
 ssh-copy-id -o StrictHostKeyChecking=yes -i ~/.ssh/id_ed25519.pub -p 2222 operator@localhost
 # temporary bootstrap password: training
 ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -i ~/.ssh/id_ed25519 -p 2222 operator@localhost 'id; hostname'
 ```
 
-Teaching beat: compare the server fingerprint before accepting it; the private key never leaves the client.
+Teaching beat: `ssh-keyscan` collects but does not authenticate a key. Compare
+its fingerprint with the separately supplied trusted value before installing
+it; the private key never leaves the client.
 
 ## Demo 4 — Filter logs toward a question (7 min)
 

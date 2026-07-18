@@ -364,14 +364,22 @@ chmod 600 ~/.ssh/id_ed25519
 
 Use an empty passphrase only for this disposable training key.
 
-### 2. Record server identity
+### 2. Verify and record server identity
 
 ```bash
-ssh-keyscan -p 2222 localhost >> ~/.ssh/known_hosts
+ssh-keyscan -t ed25519 -p 2222 localhost > ~/course-host-key.scan
+expected="$(cat /etc/linux-course/ssh-host-ed25519.fingerprint)"
+observed="$(ssh-keygen -lf ~/course-host-key.scan -E sha256 | awk '{print $2}')"
+printf 'expected=%s\nobserved=%s\n' "$expected" "$observed"
+test "$observed" = "$expected"
+install -m 600 ~/course-host-key.scan ~/.ssh/known_hosts
 ssh-keygen -F '[localhost]:2222'
 ```
 
-The brackets are required for a host key associated with a non-default port.
+The course image supplies the expected fingerprint through a separate trusted
+channel. `ssh-keyscan` only collects a presented key; the equality test is what
+authenticates it for this lab. The brackets identify a non-default port in
+`known_hosts`.
 
 ### 3. Bootstrap authorization
 

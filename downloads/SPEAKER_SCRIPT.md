@@ -162,7 +162,7 @@ Timing: 1.5 minutes.
 
 Say: “Virtual machines isolate kernels; containers share one.” Learners receive a realistic Ubuntu user space with users, packages, logs, SSH, and systemd, while the instructor can reset each seat quickly.
 
-VIRTUAL MACHINE, hardware boundary: Guest owns a kernel; Stronger isolation boundary; Higher memory and boot cost. SYSTEM CONTAINER, OS boundary: Shares the host kernel; Own user space and systemd; Fast cloning and reset.
+VIRTUAL MACHINE, hardware boundary: Guest owns a kernel; Different isolation boundary; Higher memory and boot cost. SYSTEM CONTAINER, OS boundary: Shares the host kernel; Own user space and systemd; Fast cloning and reset. Do not present either boundary as automatically secure: configuration and threat model determine the real isolation strength.
 
 Example: Does closing the browser destroy the container? Why not?
 
@@ -256,7 +256,7 @@ Timing: 1.5 minutes.
 
 Say: “Path syntax has a small, precise vocabulary.” A path is evaluated left to right. Confusion usually comes from an incorrect starting directory or from shell expansion that happened before the command ran.
 
-/name means absolute: begin at root. name means relative: begin at the working directory. . means the current directory. .. means the parent directory. ~ means current user's home. name/ means directory path; trailing slash clarifies intent.
+/name means absolute: begin at root. name means relative: begin at the working directory. . means the current directory. .. means the parent directory. ~ is shell syntax expanded to the current user's home. name/ means directory path; trailing slash clarifies intent.
 
 Example: From /var/log, ../tmp means /var/tmp, not /tmp. Use realpath -m to reason about a path without requiring it to exist.
 
@@ -944,7 +944,7 @@ Transition: “When connection fails, troubleshoot in layers rather than adding 
 
 Timing: 4 minutes.
 
-Live demo. Prepare Lab 6 in the instructor demo seat. Generate a dedicated Ed25519 client key inside the learner session, record the training server host key for port 2222, and show the bracketed known_hosts entry.
+Live demo. Prepare Lab 6 in the instructor demo seat. Generate a dedicated Ed25519 client key inside the learner session, collect only the training server's Ed25519 key for port 2222, and compare its SHA-256 fingerprint with the separately supplied course fingerprint before installing the bracketed known_hosts entry. State explicitly that ssh-keyscan retrieves a key but does not authenticate it.
 
 Use ssh-copy-id with the temporary bootstrap password training. Emphasise that only the public key is installed. Then connect with BatchMode enabled; success proves no password prompt was required. Run id and hostname to verify the remote identity.
 
@@ -996,7 +996,7 @@ Transition: “The journal adds structured fields and boot-aware queries to plai
 
 Timing: 2 minutes.
 
-Build the command incrementally. -u chooses a systemd unit, --since narrows time, -p chooses priority and above, -n limits count, --no-pager makes captured output stable, and -f follows new messages. Mention -b for the current boot and -b -1 for the previous boot.
+Build the command incrementally. -u chooses a systemd unit, --since narrows time, -p chooses priority and above, -n limits count, --no-pager makes captured output stable, and -f follows new messages. Mention -b for the current boot and -b -1 for the previous boot when the journal retained it; previous-boot entries are not guaranteed with volatile storage.
 
 Warn that filtering too aggressively can hide context. Start narrow enough to be usable, then widen time or severity if needed. Read timestamps, unit names, exit status, and the earliest causal message—not only the final cascade.
 
@@ -1072,9 +1072,9 @@ Timing: 2 minutes.
 
 Say: “Unit files come from layered locations.” Prefer small drop-ins over editing vendor files that package upgrades may replace.
 
-Vendor units means /usr/lib/systemd/system. Admin units means /etc/systemd/system and overrides. Runtime units means /run/systemd/system. Drop-ins means name.service.d/*.conf overrides selected settings. Effective view means systemctl cat name.service.
+Vendor units means a distribution-specific location in systemd's unit load path; /usr/lib/systemd/system is common but not universal. Admin units means /etc/systemd/system and overrides. Runtime units means /run/systemd/system. Drop-ins means name.service.d/*.conf overrides selected settings. Effective view means systemctl cat name.service; systemctl show name.service -p FragmentPath reveals the loaded fragment.
 
-Example: systemctl edit name.service creates an administrator override while systemctl cat shows the combined effective unit.
+Example: systemctl edit name.service creates an administrator override while systemctl cat shows the combined effective unit without assuming the vendor path.
 
 Ask: “Which location should contain a durable local override?” Take one concise answer, correct the mental model if needed, and connect the answer to the locate → predict → act → observe → verify loop.
 
@@ -1220,7 +1220,7 @@ Lab facilitation: 55 minutes total.
 
 Lab 5, Permission Incident, takes 30 minutes. Learners inspect users, groups, parent directories, and numeric modes; repair the existing file and shared directory; prove setgid inheritance; and perform real positive and negative tests as Alice, Bob, and outsider. Do not accept chmod 777 or tests run only as learner.
 
-Lab 6, SSH Trust Setup, takes 25 minutes. Learners protect key material, record the host key for the non-default port, authorize only the public key, pin a strict client profile, and prove BatchMode key-only login. The temporary password is training and is used only for bootstrap.
+Lab 6, SSH Trust Setup, takes 25 minutes. Learners protect key material, compare the collected Ed25519 host-key fingerprint with a separately supplied trusted value, install the verified key for the non-default port, authorize only the public key, pin a strict client profile, and prove BatchMode key-only login. The temporary password is training and is used only for bootstrap.
 
 ## Slide 95 — HANDS-ON
 

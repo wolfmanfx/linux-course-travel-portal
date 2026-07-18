@@ -1,5 +1,5 @@
 window.COURSE_CONTENT = {
-  "generatedAt": "2026-07-18T18:27:47.552Z",
+  "generatedAt": "2026-07-18T21:54:30.073Z",
   "narration": {
     "language": "en",
     "complete": true,
@@ -270,7 +270,7 @@ window.COURSE_CONTENT = {
       "number": 13,
       "image": "assets/slides/slide-13.png",
       "title": "ENVIRONMENT",
-      "notes": "Timing: 1.5 minutes.\n\nSay: “Virtual machines isolate kernels; containers share one.” Learners receive a realistic Ubuntu user space with users, packages, logs, SSH, and systemd, while the instructor can reset each seat quickly.\n\nVIRTUAL MACHINE, hardware boundary: Guest owns a kernel; Stronger isolation boundary; Higher memory and boot cost. SYSTEM CONTAINER, OS boundary: Shares the host kernel; Own user space and systemd; Fast cloning and reset.\n\nExample: Does closing the browser destroy the container? Why not?\n\nAsk: “The transferable skill is recognizing which concepts stay stable across these boundaries.” Take one concise answer, correct the mental model if needed, and connect the answer to the locate → predict → act → observe → verify loop.\n\nTransition: “undefined”",
+      "notes": "Timing: 1.5 minutes.\n\nSay: “Virtual machines isolate kernels; containers share one.” Learners receive a realistic Ubuntu user space with users, packages, logs, SSH, and systemd, while the instructor can reset each seat quickly.\n\nVIRTUAL MACHINE, hardware boundary: Guest owns a kernel; Different isolation boundary; Higher memory and boot cost. Isolation strength depends on configuration and threat model. SYSTEM CONTAINER, OS boundary: Shares the host kernel; Own user space and systemd; Fast cloning and reset.\n\nExample: Does closing the browser destroy the container? Why not?\n\nAsk: “The transferable skill is recognizing which concepts stay stable across these boundaries.” Take one concise answer, correct the mental model if needed, and connect the answer to the locate → predict → act → observe → verify loop.\n\nTransition: “undefined”",
       "narration": {
         "number": 13,
         "title": "Virtual machines isolate kernels; containers share one",
@@ -410,7 +410,7 @@ window.COURSE_CONTENT = {
       "number": 20,
       "image": "assets/slides/slide-20.png",
       "title": "FILESYSTEM",
-      "notes": "Timing: 1.5 minutes.\n\nSay: “Path syntax has a small, precise vocabulary.” A path is evaluated left to right. Confusion usually comes from an incorrect starting directory or from shell expansion that happened before the command ran.\n\n/name means absolute: begin at root. name means relative: begin at the working directory. . means the current directory. .. means the parent directory. ~ means current user's home. name/ means directory path; trailing slash clarifies intent.\n\nExample: From /var/log, ../tmp means /var/tmp, not /tmp. Use realpath -m to reason about a path without requiring it to exist.\n\nAsk: “What does ./script.sh communicate that script.sh does not?” Take one concise answer, correct the mental model if needed, and connect the answer to the locate → predict → act → observe → verify loop.\n\nTransition: “Names beginning with a dot add one visibility convention, not a security boundary.”",
+      "notes": "Timing: 1.5 minutes.\n\nSay: “Path syntax has a small, precise vocabulary.” A path is evaluated left to right. Confusion usually comes from an incorrect starting directory or from shell expansion that happened before the command ran.\n\n/name means absolute: begin at root. name means relative: begin at the working directory. . means the current directory. .. means the parent directory. ~ is shell syntax expanded to the current user's home. name/ means directory path; trailing slash clarifies intent.\n\nExample: From /var/log, ../tmp means /var/tmp, not /tmp. Use realpath -m to reason about a path without requiring it to exist.\n\nAsk: “What does ./script.sh communicate that script.sh does not?” Take one concise answer, correct the mental model if needed, and connect the answer to the locate → predict → act → observe → verify loop.\n\nTransition: “Names beginning with a dot add one visibility convention, not a security boundary.”",
       "narration": {
         "number": 20,
         "title": "Path syntax has a small, precise vocabulary",
@@ -1450,7 +1450,7 @@ window.COURSE_CONTENT = {
       "number": 72,
       "image": "assets/slides/slide-72.png",
       "title": "Live demo: verify before you trust",
-      "notes": "Timing: 4 minutes.\n\nLive demo. Prepare Lab 6 in the instructor demo seat. Generate a dedicated Ed25519 client key inside the learner session, record the training server host key for port 2222, and show the bracketed known_hosts entry.\n\nUse ssh-copy-id with the temporary bootstrap password training. Emphasise that only the public key is installed. Then connect with BatchMode enabled; success proves no password prompt was required. Run id and hostname to verify the remote identity.\n\nNever display a real personal key or reuse a production credential.\n\nTransition: “Next: Test SSH failures one layer at a time.”",
+      "notes": "Timing: 4 minutes.\n\nLive demo. Prepare Lab 6 in the instructor demo seat. Generate a dedicated Ed25519 client key inside the learner session, collect the training server Ed25519 host key for port 2222, compare its SHA-256 fingerprint with the separately supplied course value, and only then install and show the bracketed known_hosts entry. Explain that ssh-keyscan retrieves a key but does not authenticate it.\n\nUse ssh-copy-id with the temporary bootstrap password training. Emphasise that only the public key is installed. Then connect with BatchMode enabled; success proves no password prompt was required. Run id and hostname to verify the remote identity.\n\nNever display a real personal key or reuse a production credential.\n\nTransition: “Next: Test SSH failures one layer at a time.”",
       "narration": {
         "number": 72,
         "title": "Live demo: verify before you trust",
@@ -1530,7 +1530,7 @@ window.COURSE_CONTENT = {
       "number": 76,
       "image": "assets/slides/slide-76.png",
       "title": "Filter the journal toward one answer",
-      "notes": "Timing: 2 minutes.\n\nBuild the command incrementally. -u chooses a systemd unit, --since narrows time, -p chooses priority and above, -n limits count, --no-pager makes captured output stable, and -f follows new messages. Mention -b for the current boot and -b -1 for the previous boot.\n\nWarn that filtering too aggressively can hide context. Start narrow enough to be usable, then widen time or severity if needed. Read timestamps, unit names, exit status, and the earliest causal message—not only the final cascade.\n\nPoint out access: normal users may see only their own journal; sudo may be required for system units.\n\nTransition: “Next: journalctl can narrow by unit, boot, time, and priority.”",
+      "notes": "Timing: 2 minutes.\n\nBuild the command incrementally. -u chooses a systemd unit, --since narrows time, -p chooses priority and above, -n limits count, --no-pager makes captured output stable, and -f follows new messages. Mention -b for the current boot and -b -1 for the previous boot when retained; volatile journal storage does not preserve prior boots.\n\nWarn that filtering too aggressively can hide context. Start narrow enough to be usable, then widen time or severity if needed. Read timestamps, unit names, exit status, and the earliest causal message—not only the final cascade.\n\nPoint out access: normal users may see only their own journal; sudo may be required for system units.\n\nTransition: “Next: journalctl can narrow by unit, boot, time, and priority.”",
       "narration": {
         "number": 76,
         "title": "Filter the journal toward one answer",
@@ -1650,7 +1650,7 @@ window.COURSE_CONTENT = {
       "number": 82,
       "image": "assets/slides/slide-82.png",
       "title": "SYSTEMD",
-      "notes": "Timing: 2 minutes.\n\nSay: “Unit files come from layered locations.” Prefer small drop-ins over editing vendor files that package upgrades may replace.\n\nVendor units means /usr/lib/systemd/system. Admin units means /etc/systemd/system and overrides. Runtime units means /run/systemd/system. Drop-ins means name.service.d/*.conf overrides selected settings. Effective view means systemctl cat name.service.\n\nExample: systemctl edit name.service creates an administrator override while systemctl cat shows the combined effective unit.\n\nAsk: “Which location should contain a durable local override?” Take one concise answer, correct the mental model if needed, and connect the answer to the locate → predict → act → observe → verify loop.\n\nTransition: “The manager turns that declaration into a runtime state machine.”",
+      "notes": "Timing: 2 minutes.\n\nSay: “Unit files come from layered locations.” Prefer small drop-ins over editing vendor files that package upgrades may replace.\n\nVendor units load from a distribution-specific search path; /usr/lib/systemd/system is common but not universal. Use systemctl cat and systemctl show -p FragmentPath to inspect the effective source. Admin units means /etc/systemd/system and overrides. Runtime units means /run/systemd/system. Drop-ins means name.service.d/*.conf overrides selected settings. Effective view means systemctl cat name.service.\n\nExample: systemctl edit name.service creates an administrator override while systemctl cat shows the combined effective unit.\n\nAsk: “Which location should contain a durable local override?” Take one concise answer, correct the mental model if needed, and connect the answer to the locate → predict → act → observe → verify loop.\n\nTransition: “The manager turns that declaration into a runtime state machine.”",
       "narration": {
         "number": 82,
         "title": "Unit files come from layered locations",
@@ -1890,7 +1890,7 @@ window.COURSE_CONTENT = {
       "number": 94,
       "image": "assets/slides/slide-94.png",
       "title": "HANDS-ON",
-      "notes": "Lab facilitation: 55 minutes total.\n\nLab 5, Permission Incident, takes 30 minutes. Learners inspect users, groups, parent directories, and numeric modes; repair the existing file and shared directory; prove setgid inheritance; and perform real positive and negative tests as Alice, Bob, and outsider. Do not accept chmod 777 or tests run only as learner.\n\nLab 6, SSH Trust Setup, takes 25 minutes. Learners protect key material, record the host key for the non-default port, authorize only the public key, pin a strict client profile, and prove BatchMode key-only login. The temporary password is training and is used only for bootstrap.",
+      "notes": "Lab facilitation: 55 minutes total.\n\nLab 5, Permission Incident, takes 30 minutes. Learners inspect users, groups, parent directories, and numeric modes; repair the existing file and shared directory; prove setgid inheritance; and perform real positive and negative tests as Alice, Bob, and outsider. Do not accept chmod 777 or tests run only as learner.\n\nLab 6, SSH Trust Setup, takes 25 minutes. Learners protect key material, compare the collected Ed25519 key with a separately supplied trusted fingerprint, install the verified key for the non-default port, authorize only the public key, pin a strict client profile, and prove BatchMode key-only login. The temporary password is training and is used only for bootstrap.",
       "narration": {
         "number": 94,
         "title": "HANDS-ON",
