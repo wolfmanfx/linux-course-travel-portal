@@ -14,10 +14,20 @@ function showSlide(number, updateHash = true) {
   slideImage.alt = `Course slide ${currentSlide}: ${slide.title || "Linux Foundations"}`;
   slidePosition.textContent = `Slide ${currentSlide} of ${content.slides.length}`;
   notes.textContent = slide.notes || "No speaker notes for this slide.";
-  slideNarration.src = slide.narration.audioUrl;
-  slideNarration.load();
-  const planned = slide.narration.plannedTiming ? ` · planned ${slide.narration.plannedTiming}` : "";
-  slideNarrationMeta.textContent = `${formatDuration(slide.narration.measuredDurationSeconds)} audio${planned}`;
+  const narration = slide.narration || {};
+  const planned = narration.plannedTiming ? ` · planned ${narration.plannedTiming}` : "";
+  if (narration.audioUrl) {
+    slideNarration.hidden = false;
+    slideNarration.src = narration.audioUrl;
+    slideNarration.load();
+    slideNarrationMeta.textContent = `${formatDuration(narration.measuredDurationSeconds)} audio${planned}`;
+  } else {
+    slideNarration.pause();
+    slideNarration.removeAttribute("src");
+    slideNarration.load();
+    slideNarration.hidden = true;
+    slideNarrationMeta.textContent = `English narration refresh in progress${planned}`;
+  }
   document.querySelectorAll(".thumbnail").forEach((button, index) => {
     const active = index + 1 === currentSlide;
     button.classList.toggle("active", active);
@@ -104,14 +114,25 @@ content.videos.forEach(video => {
 
 document.querySelector("#slideCount").textContent = content.slides.length;
 const timing = content.narration.timing;
-document.querySelector("#fullDeckNarration").src = content.narration.fullDeckAudio;
+const fullDeckNarration = document.querySelector("#fullDeckNarration");
+if (content.narration.complete && content.narration.fullDeckAudio) {
+  fullDeckNarration.src = content.narration.fullDeckAudio;
+} else {
+  fullDeckNarration.hidden = true;
+  document.querySelector("#narrationLinks").hidden = true;
+  document.querySelector("#timingGrid").hidden = true;
+  document.querySelector("#narrationHeading").textContent = "Slide narration refresh";
+}
 document.querySelector("#declaredTheoryMinutes").textContent = `${timing.declaredTheoryTargetMinutes} min`;
-document.querySelector("#explicitTheoryMinutes").textContent = `${timing.explicitSlide1To30ScheduleMinutes} min`;
+const explicitTheoryMinutes = timing.explicitSlide1To90ScheduleMinutes ?? timing.explicitSlide1To30ScheduleMinutes;
+document.querySelector("#explicitTheoryMinutes").textContent = `${explicitTheoryMinutes} min`;
 document.querySelector("#spokenNarrationMinutes").textContent = formatMinutes(timing.measuredSpokenAudioSeconds);
 document.querySelector("#plannedLabMinutes").textContent = `${timing.plannedLabMinutes} min`;
 document.querySelector("#timingGapMinutes").textContent = formatMinutes(timing.explicitScheduleMinusSpokenSeconds);
 document.querySelector("#fullDeckDuration").textContent = formatMinutes(timing.fullDeckDurationSeconds);
-document.querySelector("#timingExplanation").textContent = timing.explanation;
+document.querySelector("#timingExplanation").textContent = content.narration.complete
+  ? timing.explanation
+  : `The 98-slide deck is available now. English narration is being regenerated and has passed for ${content.narration.availableSlides} of ${content.slides.length} slides.`;
 const requestedSlide = Number(location.hash.match(/^#slide-(\d+)$/)?.[1] || 1);
 showSlide(requestedSlide, false);
 

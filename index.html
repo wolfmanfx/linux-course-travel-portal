@@ -35,7 +35,7 @@
           <a class="button secondary" href="#videos">Browse walkthroughs</a>
         </div>
         <div class="stats" aria-label="Course summary">
-          <div><strong id="slideCount">38</strong><span>slides</span></div>
+          <div><strong id="slideCount">98</strong><span>slides</span></div>
           <div><strong>6</strong><span>labs</span></div>
           <div><strong>3 + 3</strong><span>hours</span></div>
         </div>
@@ -70,14 +70,14 @@
           <h3 id="narrationHeading">Full-deck slide narration</h3>
           <p id="timingExplanation">Loading the measured narration and schedule comparison…</p>
           <audio id="fullDeckNarration" controls preload="metadata"></audio>
-          <div class="narration-links">
+          <div class="narration-links" id="narrationLinks">
             <a class="text-link" href="media/linux-foundations-full-deck.en.mp3" download>Download full-deck MP3</a>
             <a class="text-link" href="media/slide-narration-manifest.json" download>Download timing manifest</a>
           </div>
         </div>
-        <div class="timing-grid" aria-label="Course duration audit">
+        <div class="timing-grid" id="timingGrid" aria-label="Course duration audit">
           <div><strong id="declaredTheoryMinutes">180 min</strong><span>declared theory target</span></div>
-          <div class="timing-warning"><strong id="explicitTheoryMinutes">194 min</strong><span>explicit slides 1–30 schedule</span></div>
+          <div class="timing-warning"><strong id="explicitTheoryMinutes">180 min</strong><span>explicit slides 1–90 schedule</span></div>
           <div><strong id="spokenNarrationMinutes">—</strong><span>measured spoken audio</span></div>
           <div><strong id="plannedLabMinutes">180 min</strong><span>planned lab block</span></div>
           <div><strong id="timingGapMinutes">—</strong><span>explicit schedule minus speech</span></div>
@@ -92,7 +92,7 @@
           <button class="slide-arrow next" id="nextSlide" type="button" aria-label="Next slide">→</button>
         </div>
         <aside class="notes-panel" aria-live="polite">
-          <div class="slide-counter"><span id="slidePosition">Slide 1 of 38</span><button id="fullscreenSlide" type="button">Full screen</button></div>
+          <div class="slide-counter"><span id="slidePosition">Slide 1 of 98</span><button id="fullscreenSlide" type="button">Full screen</button></div>
           <h3>English narration</h3>
           <audio id="slideNarration" controls preload="metadata"></audio>
           <p class="narration-meta" id="slideNarrationMeta">Loading narration…</p>
