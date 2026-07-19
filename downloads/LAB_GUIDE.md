@@ -527,6 +527,93 @@ you can reproduce the reasoning.
 
 ---
 
+## Optional extension bank — 30 additional minutes
+
+Labs 1–8 already occupy the complete 180-minute practical block. Labs 9–10 are
+optional 15-minute extensions for a fast cohort, a fourth course hour, or
+post-course practice. Do not silently add them to the six-hour timetable.
+
+## Lab 9 — Process & Port Investigation (optional, 15 min)
+
+### Mission
+
+Identify exactly what owns `localhost:9099`, connect the unit to its PID, user,
+socket, and HTTP behavior, preserve the evidence, then stop it through systemd
+and prove the port closed.
+
+```bash
+systemctl status course-probe.service --no-pager
+systemctl show course-probe.service -p MainPID -p User -p ExecStart
+ss -ltnp 'sport = :9099'
+
+pid="$(systemctl show course-probe.service -p MainPID --value)"
+ps -o pid,ppid,user,stat,cmd -p "$pid"
+sudo tr '\0' ' ' < "/proc/$pid/cmdline"; echo
+curl -fsS http://127.0.0.1:9099/
+```
+
+Create `~/process-report.txt` using the observed PID:
+
+```text
+UNIT=course-probe.service
+PID=<observed MainPID>
+USER=courseprobe
+PORT=9099
+HTTP=course probe ready
+```
+
+Stop and verify through two independent views:
+
+```bash
+sudo systemctl stop course-probe.service
+systemctl is-active course-probe.service
+ss -ltnH 'sport = :9099'
+```
+
+An empty socket query and an inactive unit together show that both manager and
+network state changed. Stop a managed process through systemd rather than
+killing a PID behind the manager's back.
+
+---
+
+## Lab 10 — systemd Drop-in & Effective Configuration (optional, 15 min)
+
+### Mission
+
+Change `course-mode.service` from development to production using a durable
+administrator drop-in. Do not edit the original unit.
+
+```bash
+systemctl cat course-mode.service
+systemctl show course-mode.service \
+  -p FragmentPath -p DropInPaths -p Environment
+cat /run/course-mode.txt
+```
+
+Create the override:
+
+```bash
+sudo install -d -m 0755 /etc/systemd/system/course-mode.service.d
+printf '[Service]\nEnvironment=COURSE_MODE=production\n' \
+  | sudo tee /etc/systemd/system/course-mode.service.d/override.conf >/dev/null
+```
+
+Load, apply, and verify:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart course-mode.service
+systemctl cat course-mode.service
+systemctl show course-mode.service -p Environment -p DropInPaths
+cat /run/course-mode.txt
+```
+
+`daemon-reload` makes the manager reread unit definitions. Restart executes the
+service with the new environment. `systemctl cat` and `DropInPaths` prove the
+effective declaration; `/run/course-mode.txt` independently proves behavior.
+
+---
+
 ## Offline fallback
 
 If the browser platform is unavailable, the instructor can provide the

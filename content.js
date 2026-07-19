@@ -1,5 +1,5 @@
 window.COURSE_CONTENT = {
-  "generatedAt": "2026-07-18T21:54:30.073Z",
+  "generatedAt": "2026-07-19T05:30:57.969Z",
   "narration": {
     "language": "en",
     "complete": true,

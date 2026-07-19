@@ -40,6 +40,14 @@ The timing below contains exactly 180 minutes of theory/demos and 180 minutes of
 | 7. Journal investigation | 20 | 155 |
 | 8. Broken-service capstone | 25 | 180 |
 
+Optional extension bank—do not include inside the 180-minute block unless
+another activity is removed:
+
+| Lab | Min | Use |
+|---|---:|---|
+| 9. Process and port investigation | 15 | Fast cohort, fourth hour, or post-course practice |
+| 10. systemd drop-in and effective configuration | 15 | Fast cohort, fourth hour, or post-course practice |
+
 ## Optional wall-clock schedule
 
 If breaks and lunch are outside the six instructional hours:
