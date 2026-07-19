@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:11,820
+Inspect before changing anything. The fragment path identifies the original unit, DropInPaths is initially empty, the environment selects development, and the generated file proves current behavior.
+
+2
+00:00:12,170 --> 00:00:21,870
+Create an administrator drop-in under /etc. It changes only COURSE_MODE and leaves the original service fragment intact. daemon-reload makes the manager reread unit definitions.
+
+3
+00:00:22,220 --> 00:00:31,060
+Restart creates a new service execution from the effective definition. systemctl cat shows the main fragment followed by the loaded override, so the declaration is reviewable.
+
+4
+00:00:31,410 --> 00:00:40,070
+The normalized Environment property and DropInPaths prove manager state. The output file independently proves production behavior. The checker requires all three layers to agree.

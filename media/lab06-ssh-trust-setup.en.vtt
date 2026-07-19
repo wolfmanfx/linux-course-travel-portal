@@ -1,0 +1,21 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:15.940
+The private SSH directory uses mode 700. ssh-keygen creates a dedicated Ed25519 key, and mode 600 protects the private half while the public half remains shareable.
+
+2
+00:00:16.290 --> 00:00:27.990
+ssh-keyscan collects the Ed25519 key for port 2222. Comparing its SHA-256 fingerprint with the separately supplied course value authenticates it before installation.
+
+3
+00:00:28.340 --> 00:00:37.180
+ssh-keygen -F proves the verified bracketed host-and-port entry exists before user authentication begins.
+
+4
+00:00:37.530 --> 00:00:51.830
+ssh-copy-id uses the temporary password once to install only the public key. The client profile then pins host, port, user, identity file, IdentitiesOnly, and strict host-key checking.
+
+5
+00:00:52.180 --> 00:01:03.180
+ssh -G displays the effective configuration without connecting. The final BatchMode login cannot ask for a password, so the remote id and hostname prove verified key-only access through the named profile.

@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:10.720
+systemctl status gives a compact human view of the failed unit. systemctl show then provides machine-readable ActiveState, SubState, Result, and ExecMainStatus without relying on screen formatting.
+
+2
+00:00:11.070 --> 00:00:24.170
+journalctl scopes history to this unit and the current boot. The ISO format makes timestamps explicit while preserving the event sequence around the failure.
+
+3
+00:00:24.520 --> 00:00:37.660
+We save the scoped journal before filtering it. The causal record identifies incident DISK_THRESHOLD and exit code 42; the later failed state is a consequence, not the root event.
+
+4
+00:00:38.010 --> 00:00:46.990
+lab-answer.txt records five exact facts from independent status and journal evidence. The final grep proves the preserved evidence still contains the incident submitted to the checker.

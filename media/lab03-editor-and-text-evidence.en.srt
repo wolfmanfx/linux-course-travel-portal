@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:12,520
+First inspect the numbered configuration, then edit it in Nano. We replace all three lines, write the file with Control-O, confirm the filename, and exit with Control-X.
+
+2
+00:00:12,870 --> 00:00:22,850
+cat proves the exact saved settings. Sorting through uniq -d checks for accidental duplicate lines before we use the configuration as evidence.
+
+3
+00:00:23,200 --> 00:00:34,380
+The access-log pipeline extracts field four, sorts equal status codes together, counts adjacent values, and finally rewrites each row as status followed by count. The saved report must show three 404 responses.
+
+4
+00:00:34,730 --> 00:00:46,030
+A structured grep selects only records beginning with level=ERROR. cat displays both reports and wc confirms exactly two error events, giving independent content and count checks before automation runs.

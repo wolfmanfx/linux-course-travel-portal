@@ -1,0 +1,15 @@
+1
+00:00:00,000 --> 00:00:10,200
+Start with the service manager and the socket table. Status gives a human summary, show exposes the normalized MainPID and service identity, and ss proves that TCP port 9099 is listening.
+
+2
+00:00:10,550 --> 00:00:21,030
+Use the MainPID rather than guessing by command name. ps shows the process hierarchy and credentials. The proc command line is supporting evidence, with NUL separators translated only for display.
+
+3
+00:00:21,380 --> 00:00:30,420
+curl proves application behavior. We preserve the original PID, identity, port, and response in process-report.txt before changing the service state.
+
+4
+00:00:30,770 --> 00:00:40,990
+Stop the managed process through systemd. An inactive unit and an empty listening-socket query independently prove that both manager and network state changed. The checker validates the complete evidence chain.
