@@ -1,6 +1,6 @@
 # Lab fact-check record
 
-Verified 18 July 2026 against the Ubuntu 24.04 classroom baseline and primary
+Verified 19 July 2026 against the Ubuntu 24.04 classroom baseline and primary
 upstream documentation.
 
 ## Results by lab
@@ -40,13 +40,24 @@ upstream documentation.
    content is narrower than editing a correct unit. `daemon-reload` is not
    needed because no unit definition changes. State, enablement, socket, and
    HTTP response are checked independently.
+9. **Process & Port Investigation — verified and qualified.** `MainPID` is
+   runtime state exposed by `systemctl show`; `ps`, `/proc/PID/cmdline`, `ss`,
+   and `curl` are independent views. `/proc/PID/cmdline` is supporting evidence
+   because a process can rewrite the visible argument strings. The checker
+   records the initial PID before the learner stops the unit and separately
+   proves the unit inactive and port 9099 closed.
+10. **systemd Drop-in & Effective Configuration — verified.** The administrator
+    drop-in is stored under `/etc/systemd/system/UNIT.d/`, `daemon-reload`
+    rereads the definition, and restart creates a new execution with the
+    changed environment. `systemctl cat`, `DropInPaths`, `Environment`, and the
+    generated file prove declaration, manager state, and behavior separately.
 
 ## Validation performed
 
 - Shell syntax checks passed for setup, checker, and Incus end-to-end scripts.
 - Browser-platform static checks passed.
-- All eight video scenarios passed schema and ordering validation.
-- The corrected 98-slide PowerPoint passed the full canvas overflow test.
+- All ten setup and checker branches pass shell syntax and static contract tests.
+- Labs 9–10 are required; the practical route totals 210 minutes.
 - End-to-end Incus execution requires the Linux controller host; Incus is not
   installed on the macOS authoring machine. The repository's
   `tests/incus-checkers.sh` remains the authoritative disposable-instance test.
@@ -64,3 +75,6 @@ upstream documentation.
 - systemd `journalctl(1)`: https://www.freedesktop.org/software/systemd/man/latest/journalctl.html
 - systemd `systemctl(1)`: https://www.freedesktop.org/software/systemd/man/latest/systemctl.html
 - systemd `systemd.unit(5)`: https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html
+- systemd `systemd.exec(5)`: https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html
+- Linux `proc_pid_cmdline(5)`: https://man7.org/linux/man-pages/man5/proc_pid_cmdline.5.html
+- iproute2 `ss(8)`: https://man7.org/linux/man-pages/man8/ss.8.html

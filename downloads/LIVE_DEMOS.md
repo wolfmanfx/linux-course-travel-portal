@@ -1,126 +1,356 @@
-# Linux Foundations — Live Demo Commands
+# Linux Foundations — Distinct Live Demonstrations
 
-These commands mirror the deck speaker notes. Type them live rather than pasting
-whole blocks. Use a dedicated instructor seat in the browser platform, plus a
-second seat as a fallback. Reset only the named scenario before each demo.
+These demonstrations precede the corresponding learner labs, but they do not
+reuse the lab's paths, users, ports, services, values, or failure causes. Use a
+dedicated instructor seat. Run each setup block before presenting and the
+cleanup block after the debrief.
 
-## Demo 1 — The browser/session boundary and navigation (8 min)
+For every demonstration: state the question, ask for a prediction, run one
+command at a time, read the evidence aloud, and verify the conclusion through a
+different interface.
 
-In the portal, prepare **Lab 2 — Filesystem & Links**. Then focus the ttyd
-terminal and run:
+## Demo 1 — Locate the boundary (Module 1, 4 min)
+
+Question: which facts belong to the host, controller VM, and learner container?
+
+On the controller VM:
 
 ```bash
-whoami
-hostname
-pwd
-printf 'session kernel: '; uname -srm
-ls /
-cd /var/log
-pwd
-ls -lh | head
-cd ~
-mkdir -p demo/{in,out}
-printf 'error: demo\ninfo: healthy\n' > demo/in/app.log
-grep 'error' demo/in/app.log | tee demo/out/errors.txt
-cat demo/out/errors.txt
+uname -srmo
+incus info demo-seat | sed -n '1,22p'
+incus exec demo-seat -- cat /etc/os-release
+incus exec demo-seat -- uname -srmo
+incus exec demo-seat -- ps -p 1 -o pid,comm,args=
 ```
 
-Teaching beat: the browser displays the session, but the Linux container owns
-the filesystem and processes. Every command either observes or transforms that
-session's state.
+On the presenter’s macOS or Windows host, show only host identity and
+virtualization status. Do not run learner Bash commands in the host shell.
 
-## Demo 2 — Diagnose and repair permissions (10 min)
+Teaching result: the container has its own Ubuntu user space and process view,
+but a system container shares the controller's Linux kernel. Lab 1 profiles a
+different assigned learner seat.
 
-Prepare **Lab 5 — Permission Incident** before starting. The scenario already
-contains Alice, Bob, Outsider, `webteam`, and `/srv/team-share`. Use the lab
-objects or create the parallel `demoops` example below.
+## Demo 2 — Diagnose a wrong directory (Module 2, 5 min)
+
+Setup:
+
+```bash
+rm -rf /var/tmp/demo-tree
+mkdir -p /var/tmp/demo-tree/incoming /var/tmp/demo-tree/archive
+printf 'review me\n' >/var/tmp/demo-tree/incoming/report.txt
+cd /var/tmp/demo-tree/archive
+```
+
+Demonstration:
+
+```bash
+pwd
+ls -la
+cat report.txt
+printf 'status=%s\n' "$?"
+realpath ../incoming/report.txt
+namei -l ../incoming/report.txt
+cp ../incoming/report.txt ./report.reviewed
+stat -c '%F %a %U:%G %n' ../incoming/report.txt ./report.reviewed
+```
+
+Cleanup:
+
+```bash
+cd ~
+rm -rf /var/tmp/demo-tree
+```
+
+Teaching result: the error is a coordinate problem, not missing data. Lab 2
+uses an inbox, three project directories, and both hard and symbolic links.
+
+## Demo 3 — Turn records into evidence (Module 3, 6 min)
+
+Setup:
+
+```bash
+cat >/var/tmp/demo-auth.log <<'EOF'
+2026-07-19T09:00:01Z user=ada result=success source=10.0.0.8
+2026-07-19T09:00:07Z user=lin result=failure source=10.0.0.9
+2026-07-19T09:00:12Z user=ada result=failure source=10.0.0.8
+2026-07-19T09:00:19Z user=lin result=failure source=10.0.0.9
+EOF
+```
+
+Demonstration:
+
+```bash
+head /var/tmp/demo-auth.log
+grep ' result=failure ' /var/tmp/demo-auth.log
+grep ' result=failure ' /var/tmp/demo-auth.log | awk '{print $4}'
+grep ' result=failure ' /var/tmp/demo-auth.log \
+  | awk -F'source=' '{print $2}' | sort | uniq -c | sort -nr
+grep ' result=failure ' /var/tmp/demo-auth.log >~/demo-auth-failures.txt
+wc -l ~/demo-auth-failures.txt
+```
+
+Cleanup:
+
+```bash
+rm -f /var/tmp/demo-auth.log ~/demo-auth-failures.txt
+```
+
+Teaching result: inspect the record grammar before choosing fields. Lab 3 uses
+a configuration file plus application and HTTP access logs with different
+formats.
+
+## Demo 4 — Connect repository state to executable behavior (Module 4, 5 min)
+
+Question: what would prove that `jq` is available through the supported package
+system rather than only that a similarly named command happens to run?
+
+```bash
+apt-cache policy jq
+dpkg-query -W -f='${Status}\n${Version}\n' jq 2>/dev/null || true
+command -v jq || true
+sudo apt-get update
+sudo apt-get install -y jq
+dpkg-query -W -f='${Status}\n${Version}\n' jq
+command -v jq
+dpkg-query -S "$(command -v jq)"
+printf '{"state":"ready","count":2}\n' | jq -r '.state'
+```
+
+Teaching result: candidate, registered state, file ownership, and behavior are
+different claims. Lab 4 installs and audits `tree`, not `jq`.
+
+## Demo 5 — Repair authorization from identities outward (Module 5, 8 min)
+
+Setup:
 
 ```bash
 sudo groupadd -f demoops
-id alice >/dev/null 2>&1 || sudo useradd -m alice
-sudo usermod -aG demoops alice
-sudo install -d -o root -g demoops -m 2770 /srv/demo-share
-sudo -u alice -H bash -lc 'echo demo > /srv/demo-share/report.txt'
-stat -c '%A %a %U:%G %n' /srv/demo-share /srv/demo-share/report.txt
-sudo chmod 600 /srv/demo-share/report.txt
-sudo -u nobody cat /srv/demo-share/report.txt
-namei -l /srv/demo-share/report.txt
-sudo chown alice:demoops /srv/demo-share/report.txt
-sudo chmod 640 /srv/demo-share/report.txt
-stat -c '%A %a %U:%G %n' /srv/demo-share/report.txt
+id demo-alex >/dev/null 2>&1 || sudo useradd -m demo-alex
+id demo-riley >/dev/null 2>&1 || sudo useradd -m demo-riley
+sudo usermod -aG demoops demo-alex
+sudo usermod -aG demoops demo-riley
+sudo install -d -o root -g root -m 0750 /srv/demo-share
+printf 'draft\n' | sudo tee /srv/demo-share/brief.txt >/dev/null
+sudo chown root:root /srv/demo-share/brief.txt
+sudo chmod 0600 /srv/demo-share/brief.txt
 ```
 
-Teaching beat: read owner, group, and mode before changing them; make the smallest change that satisfies the use case.
-
-## Demo 3 — SSH key setup and server verification (10 min)
-
-Prepare **Lab 6 — SSH Trust Setup**. Both the client and the training server are
-inside the isolated learner container; the server listens on port 2222.
+Demonstration:
 
 ```bash
-mkdir -p ~/.ssh && chmod 700 ~/.ssh
-ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N '' -C 'linux-live-demo'
-chmod 600 ~/.ssh/id_ed25519
-ssh-keyscan -t ed25519 -p 2222 localhost > ~/course-host-key.scan
-expected="$(cat /etc/linux-course/ssh-host-ed25519.fingerprint)"
-observed="$(ssh-keygen -lf ~/course-host-key.scan -E sha256 | awk '{print $2}')"
-printf 'expected=%s\nobserved=%s\n' "$expected" "$observed"
-test "$observed" = "$expected"
-install -m 600 ~/course-host-key.scan ~/.ssh/known_hosts
-ssh-keygen -F '[localhost]:2222'
-ssh-copy-id -o StrictHostKeyChecking=yes -i ~/.ssh/id_ed25519.pub -p 2222 operator@localhost
-# temporary bootstrap password: training
-ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -i ~/.ssh/id_ed25519 -p 2222 operator@localhost 'id; hostname'
+id demo-alex
+id demo-riley
+namei -l /srv/demo-share/brief.txt
+sudo -u demo-alex test -w /srv/demo-share || echo DEMO_ALEX_BLOCKED
+sudo chown root:demoops /srv/demo-share /srv/demo-share/brief.txt
+sudo chmod 2770 /srv/demo-share
+sudo chmod 0660 /srv/demo-share/brief.txt
+sudo -u demo-alex sh -c 'echo reviewed >> /srv/demo-share/brief.txt'
+sudo -u demo-riley sh -c 'echo riley > /srv/demo-share/riley.txt'
+stat -c '%A %a %U:%G %n' /srv/demo-share /srv/demo-share/*
 ```
 
-Teaching beat: `ssh-keyscan` collects but does not authenticate a key. Compare
-its fingerprint with the separately supplied trusted value before installing
-it; the private key never leaves the client.
+Teaching result: directory traversal, group credentials, file mode, and setgid
+inheritance are tested separately. Lab 5 uses `webteam`, Alice, Bob, outsider,
+and a different share.
 
-## Demo 4 — Filter logs toward a question (7 min)
+## Demo 6 — Verify both halves of SSH trust (Module 6, 8 min)
 
-Keep Lab 6 loaded so the SSH service exists, then create a known event:
+Setup a separate endpoint on port 2207:
 
 ```bash
-sudo systemctl restart ssh
-systemctl status ssh --no-pager
-sudo journalctl -u ssh -n 10 --no-pager
-sudo journalctl -u ssh --since '-5 min' -p warning --no-pager
-sudo journalctl -u ssh -f
+id demo-operator >/dev/null 2>&1 || sudo useradd -m -s /bin/bash demo-operator
+sudo install -d -m 0755 /run/demo-sshd
+sudo ssh-keygen -q -t ed25519 -N '' -f /run/demo-sshd/ssh_host_ed25519_key
+sudo tee /run/demo-sshd/sshd_config >/dev/null <<'EOF'
+Port 2207
+ListenAddress 127.0.0.1
+HostKey /run/demo-sshd/ssh_host_ed25519_key
+PidFile /run/demo-sshd/sshd.pid
+AuthorizedKeysFile .ssh/authorized_keys
+PasswordAuthentication no
+PubkeyAuthentication yes
+UsePAM no
+EOF
+sudo /usr/sbin/sshd -f /run/demo-sshd/sshd_config
+rm -rf ~/.ssh/demo-client
+mkdir -m 700 -p ~/.ssh/demo-client
+ssh-keygen -q -t ed25519 -N '' -f ~/.ssh/demo-client/id_ed25519 -C demo-client
+sudo install -d -o demo-operator -g demo-operator -m 0700 /home/demo-operator/.ssh
+sudo install -o demo-operator -g demo-operator -m 0600 \
+  ~/.ssh/demo-client/id_ed25519.pub /home/demo-operator/.ssh/authorized_keys
 ```
 
-Press `Ctrl+C` to stop follow mode.
-
-Teaching beat: start with unit + time window, then add priority; do not scroll the entire journal hoping to notice the answer.
-
-## Demo 5 — Repair a failed service from evidence (10 min)
+Demonstration:
 
 ```bash
-sudo tee /etc/systemd/system/demo-web.service >/dev/null <<'UNIT'
+ssh-keyscan -t ed25519 -p 2207 localhost >~/.ssh/demo-client/host.scan 2>/dev/null
+ssh-keygen -lf /run/demo-sshd/ssh_host_ed25519_key.pub -E sha256
+ssh-keygen -lf ~/.ssh/demo-client/host.scan -E sha256
+install -m 600 ~/.ssh/demo-client/host.scan ~/.ssh/demo-client/known_hosts
+ssh -o BatchMode=yes -o StrictHostKeyChecking=yes \
+  -o UserKnownHostsFile=~/.ssh/demo-client/known_hosts \
+  -i ~/.ssh/demo-client/id_ed25519 -p 2207 demo-operator@localhost \
+  'id; hostname'
+```
+
+Cleanup:
+
+```bash
+sudo kill "$(cat /run/demo-sshd/sshd.pid)"
+```
+
+Teaching result: compare a host-key fingerprint through an independent source,
+then prove user authentication in BatchMode. Lab 6 uses another user, port,
+host key, client profile, and bootstrap process.
+
+## Demo 7 — Separate cause from consequence in the journal (Module 7, 6 min)
+
+Setup:
+
+```bash
+sudo tee /usr/local/bin/course-demo-noisy >/dev/null <<'EOF'
+#!/usr/bin/env bash
+echo 'level=INFO event=START message="demo begins"'
+echo 'level=ERROR incident=STALE_CACHE exit_code=17 message="cache generation mismatch"'
+exit 17
+EOF
+sudo chmod 0755 /usr/local/bin/course-demo-noisy
+sudo tee /etc/systemd/system/course-demo-noisy.service >/dev/null <<'EOF'
 [Unit]
-Description=Broken demo web service
-After=network.target
-
+Description=Distinct journal demonstration
 [Service]
-User=missing-demo-user
-WorkingDirectory=/srv/demo-web
-ExecStart=/usr/bin/python3 -m http.server 8090
-
-[Install]
-WantedBy=multi-user.target
-UNIT
+Type=oneshot
+ExecStart=/usr/local/bin/course-demo-noisy
+EOF
 sudo systemctl daemon-reload
-sudo systemctl start demo-web
-systemctl status demo-web --no-pager
-sudo journalctl -u demo-web --since '-5 min' --no-pager
-systemctl cat demo-web
-sudo useradd --system --home /srv/demo-web --shell /usr/sbin/nologin missing-demo-user
-sudo install -d -o missing-demo-user -g missing-demo-user -m 750 /srv/demo-web
-echo 'healthy' | sudo tee /srv/demo-web/index.html >/dev/null
-sudo chown missing-demo-user:missing-demo-user /srv/demo-web/index.html
-sudo systemctl restart demo-web
-systemctl is-active demo-web
-curl -fsS http://localhost:8090
+sudo systemctl start course-demo-noisy.service || true
 ```
 
-Teaching beat: status gives the symptom; journal gives evidence; `systemctl cat` connects evidence to configuration; `curl` proves the behavior.
+Demonstration:
+
+```bash
+systemctl show course-demo-noisy.service \
+  -p ActiveState -p Result -p ExecMainStatus
+journalctl -u course-demo-noisy.service -b -o short-iso --no-pager
+journalctl -u course-demo-noisy.service -b --no-pager \
+  | grep -E 'incident=|code=exited'
+```
+
+Teaching result: the application record carrying `STALE_CACHE` and 17 is the
+cause; systemd's failed state is the consequence. Lab 7 uses a disk threshold
+and exit code 42.
+
+## Demo 8 — Repair a failed unit without editing the unit (Module 8, 8 min)
+
+Setup:
+
+```bash
+sudo rm -f /etc/demo-api.env
+sudo tee /etc/systemd/system/demo-api.service >/dev/null <<'EOF'
+[Unit]
+Description=Distinct missing-environment demonstration
+[Service]
+Type=simple
+EnvironmentFile=/etc/demo-api.env
+ExecStart=/usr/bin/python3 -m http.server ${DEMO_PORT} --bind 127.0.0.1
+EOF
+sudo systemctl daemon-reload
+sudo systemctl start demo-api.service || true
+```
+
+Demonstration:
+
+```bash
+systemctl status demo-api.service --no-pager
+journalctl -u demo-api.service -b --no-pager
+systemctl cat demo-api.service
+printf 'DEMO_PORT=8181\n' | sudo tee /etc/demo-api.env >/dev/null
+sudo systemctl restart demo-api.service
+systemctl is-active demo-api.service
+ss -ltn 'sport = :8181'
+curl -I http://127.0.0.1:8181/
+```
+
+Teaching result: restore the declared prerequisite, then verify state, socket,
+and protocol behavior. Lab 8 has a missing working directory on port 8088.
+
+## Demo 9 — Trace unit to process to socket (Module 9, 7 min)
+
+Setup:
+
+```bash
+sudo install -d -m 0755 /srv/demo-echo
+printf 'demo echo ready\n' | sudo tee /srv/demo-echo/index.html >/dev/null
+sudo tee /etc/systemd/system/demo-echo.service >/dev/null <<'EOF'
+[Unit]
+Description=Distinct process and socket demonstration
+[Service]
+Type=simple
+WorkingDirectory=/srv/demo-echo
+ExecStart=/usr/bin/python3 -m http.server 9191 --bind 127.0.0.1
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart demo-echo.service
+```
+
+Demonstration:
+
+```bash
+systemctl show demo-echo.service -p MainPID -p ExecStart
+pid="$(systemctl show demo-echo.service -p MainPID --value)"
+ps -o pid,ppid,user,stat,cmd -p "$pid"
+sudo tr '\0' ' ' <"/proc/$pid/cmdline"; echo
+sudo ss -ltnp 'sport = :9191'
+curl -fsS http://127.0.0.1:9191/
+sudo systemctl stop demo-echo.service
+systemctl is-active demo-echo.service
+ss -ltnH 'sport = :9191'
+```
+
+Teaching result: manager, process table, procfs, socket table, and client
+behavior answer different questions. Lab 9 investigates another service and
+port.
+
+## Demo 10 — Inspect effective configuration after a drop-in (Module 10, 7 min)
+
+Setup:
+
+```bash
+sudo tee /usr/local/bin/demo-banner-write >/dev/null <<'EOF'
+#!/usr/bin/env bash
+printf '%s\n' "${DEMO_LOG_LEVEL:-unset}" >/run/demo-banner.txt
+EOF
+sudo chmod 0755 /usr/local/bin/demo-banner-write
+sudo tee /etc/systemd/system/demo-banner.service >/dev/null <<'EOF'
+[Unit]
+Description=Distinct drop-in demonstration
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+Environment=DEMO_LOG_LEVEL=info
+ExecStart=/usr/local/bin/demo-banner-write
+EOF
+sudo rm -rf /etc/systemd/system/demo-banner.service.d
+sudo systemctl daemon-reload
+sudo systemctl restart demo-banner.service
+```
+
+Demonstration:
+
+```bash
+systemctl show demo-banner.service -p FragmentPath -p DropInPaths -p Environment
+cat /run/demo-banner.txt
+sudo install -d -m 0755 /etc/systemd/system/demo-banner.service.d
+printf '[Service]\nEnvironment=DEMO_LOG_LEVEL=debug\n' \
+  | sudo tee /etc/systemd/system/demo-banner.service.d/override.conf >/dev/null
+sudo systemctl daemon-reload
+sudo systemctl restart demo-banner.service
+systemctl cat demo-banner.service
+systemctl show demo-banner.service -p DropInPaths -p Environment
+cat /run/demo-banner.txt
+```
+
+Teaching result: fragment, drop-in path, normalized environment property, and
+generated behavior form a chain of evidence. Lab 10 uses a different unit and
+changes `COURSE_MODE` to production.

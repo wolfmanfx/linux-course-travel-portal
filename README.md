@@ -4,7 +4,7 @@ This directory is a static, mobile-friendly companion for the Linux Foundations
 course. It can be hosted from the repository's `docs/` directory with GitHub
 Pages, Netlify, Cloudflare Pages, or any basic web server.
 
-Generate the 98 English slide tracks with the self-hosted GPU environment, then
+Generate the 100 English slide tracks with the self-hosted GPU environment, then
 rebuild the packaged deck, slide images, downloads, English narration, browser
 playback videos, captions, and timing manifest:
 

@@ -1,12 +1,12 @@
 # Linux Foundations: A Fact-Checked Theory Reader
 
-**Course companion · English edition · verified 18 July 2026**
+**Course companion · English edition · verified 19 July 2026**
 
-This reader expands the theory behind the 98-slide Linux Foundations workshop. It is written for learners using an Ubuntu 24.04 classroom VM or Incus system container, while clearly marking behavior that differs by distribution, shell, or local policy. Commands are examples to inspect and discuss; make changes only in the course lab environment.
+This reader expands the theory behind the 100-slide Linux Foundations workshop. It is written for learners using an Ubuntu 24.04 classroom VM or Incus system container, while clearly marking behavior that differs by distribution, shell, or local policy. Commands are examples to inspect and discuss; make changes only in the course lab environment.
 
 ## How to use this reader
 
-Read Chapters 1–8 in order before the workshop, or use the command index and references afterward. Each chapter follows one operational loop:
+Read Chapters 1–10 in order before the workshop, or use the command index and references afterward. Each chapter follows one operational loop:
 
 - **Locate** the system, identity, object, or unit you are actually changing.
 - **Predict** the result and the evidence that should prove it.
@@ -466,7 +466,109 @@ An `active` process may still return errors, listen on the wrong interface, serv
 
 **Fact-check result.** The systemd operating model is accurate. The main correction is portability of the unit load path. The reader also clarifies that `reload`, successful `active`, and successful `enable` each prove different things.
 
-## 9. Fact-check summary and corrections to retain
+## 9. Processes, service ownership, sockets, and client evidence
+
+### 9.1 A process is a running program with context
+
+A process is not merely a command name. It has a PID, a parent, user and group credentials, a current directory, an environment, memory mappings, and open file descriptors. Those descriptors may name files, pipes, devices, or sockets. A PID is temporary and can be reused after a process exits, so a trustworthy investigation binds the PID to a unit, start time, command, and identity instead of recording the number alone.
+
+For a systemd service, the manager’s `MainPID` is the starting point, not the entire proof:
+
+```bash
+systemctl show demo.service -p MainPID -p ExecStart -p ActiveState
+pid="$(systemctl show demo.service -p MainPID --value)"
+ps -o pid,ppid,user,group,lstart,stat,cmd -p "$pid"
+```
+
+`systemctl show` reports the manager’s properties. `ps` reports a process-table view. Their agreement supports the claim that the manager is tracking the process you inspected; neither proves that the service is listening or useful to a client.
+
+### 9.2 Procfs is supporting evidence, not a stable command API
+
+`/proc/PID/` exposes process information through a virtual filesystem. `/proc/PID/cmdline` contains the command-line arguments separated by NUL bytes, and it can be empty for some processes. A process can also alter what is visible there, so the file supports an account; it should not be treated as an unforgeable identity record [21]. Render it deliberately:
+
+```bash
+sudo tr '\0' ' ' <"/proc/$pid/cmdline"; echo
+sudo readlink -f "/proc/$pid/exe"
+sudo ls -l "/proc/$pid/fd"
+```
+
+Permissions, namespaces, kernel hardening, or an exited process may limit these views. Capture the process evidence before restarting or stopping the unit because the PID and `/proc` directory will change.
+
+### 9.3 A listening socket and a successful request prove different layers
+
+`ss` displays socket information. `-l` selects listening sockets, `-t` TCP, `-n` numeric output, and `-p` process information when the caller is permitted to see it [22]. A listener proves that a transport endpoint exists; it does not prove that the intended protocol or application response works.
+
+```bash
+sudo ss -ltnp 'sport = :9099'
+curl --fail --show-error http://127.0.0.1:9099/
+```
+
+The client test should match the service contract: HTTP status and body for a web service, a protocol handshake for a database, or an authenticated operation where authorization matters. `curl` can prove an HTTP exchange at one address and time; it does not by itself prove remote reachability, firewall policy, DNS, TLS identity, or every application path.
+
+### 9.4 Stop managed processes through their manager
+
+Sending a signal directly to a service PID can bypass restart policy, cleanup, dependency handling, and the audit trail expected by the service manager. When systemd owns the process, request the lifecycle change through systemd and verify both manager and socket state:
+
+```bash
+sudo systemctl stop demo.service
+systemctl is-active demo.service
+ss -ltnH 'sport = :9099'
+```
+
+An expected non-zero result from `is-active` or an empty `ss` result must be interpreted as part of the stated postcondition, not automatically as an unexpected test failure.
+
+**Fact-check result.** The process-to-port investigation uses independent evidence planes: unit, exact PID, process credentials and command, listening socket, and client behavior. No single plane substitutes for the others.
+
+## 10. Durable systemd changes with drop-ins
+
+### 10.1 Effective configuration is assembled from layers
+
+systemd loads a main unit fragment and may merge drop-in files from precedence-ordered locations. Administrator-managed persistent changes belong under `/etc/systemd/system`; runtime changes under `/run/systemd/system` disappear at reboot. The effective location and applied drop-ins should be queried rather than guessed [19]:
+
+```bash
+systemctl show demo.service -p FragmentPath -p DropInPaths
+systemctl cat demo.service
+```
+
+Editing a vendor fragment directly hides local intent inside package-owned content and risks replacement during upgrades. A narrowly scoped drop-in makes the administrator’s delta explicit.
+
+### 10.2 Drop-ins merge settings according to unit semantics
+
+A directory named `demo.service.d` can contain `*.conf` drop-ins. Settings are not all merged in the same way: many scalar settings replace an earlier value, while list-like settings may append and sometimes require an explicit empty assignment before replacement. The relevant unit and execution manuals define the behavior for each directive [19][23].
+
+For a simple environment override:
+
+```ini
+[Service]
+Environment=COURSE_MODE=production
+```
+
+Create administrator overrides with `systemctl edit demo.service` when practical. If automation writes the file directly, create the exact directory and file with controlled ownership and mode, then inspect the resulting content.
+
+### 10.3 Reloading definitions does not change the running process
+
+Three operations answer separate questions:
+
+1. `systemctl daemon-reload` makes the manager reread unit definitions.
+2. `systemctl restart demo.service` creates a new runtime process using the effective definition.
+3. A behavioral check proves that the application observed and used the intended setting.
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart demo.service
+systemctl show demo.service -p DropInPaths -p Environment
+cat /run/course-mode.txt
+```
+
+The `Environment=` property supports the configuration account, while the generated file or client response proves application behavior. A successful restart alone proves neither that the correct drop-in won precedence nor that the application consumed the value.
+
+### 10.4 Rollback is part of the change design
+
+Before applying a drop-in, record the current effective definition and the expected postcondition. To roll back, remove only the administrator drop-in that introduced the change, run `daemon-reload`, restart when required, and repeat the same declaration and behavior checks. Avoid broad deletion of an entire `.d` directory when other administrator controls may be present.
+
+**Fact-check result.** Drop-ins are the durable, reviewable mechanism for local unit overrides, but their merge behavior is directive-specific. `daemon-reload`, service restart, and behavioral verification remain independent steps.
+
+## 11. Fact-check summary and corrections to retain
 
 The underlying course theory is technically strong. The review did not find a need to change the course’s operational model, but these qualifications are important:
 
@@ -482,8 +584,12 @@ The underlying course theory is technically strong. The review did not find a ne
 - Previous-boot journal data exists only if it was retained.
 - systemd vendor-unit paths vary; inspect the effective unit instead of assuming a path.
 - `enabled`, `active`, and behaviorally healthy are independent facts.
+- A PID, a listening socket, and a successful protocol request are independent evidence.
+- `/proc/PID/cmdline` is NUL-separated supporting data, not an unforgeable identity record.
+- systemd drop-in merge behavior depends on the specific directive.
+- `daemon-reload`, restart, and application behavior prove different state transitions.
 
-## 10. Command quick reference
+## 12. Command quick reference
 
 ```bash
 # Orientation
@@ -525,6 +631,14 @@ systemctl cat UNIT
 systemctl show UNIT -p FragmentPath -p DropInPaths
 systemctl is-active UNIT
 systemctl is-enabled UNIT
+
+# Process, socket, and drop-in evidence
+systemctl show UNIT -p MainPID -p ExecStart
+ps -o pid,ppid,user,stat,cmd -p PID
+sudo ss -ltnp 'sport = :PORT'
+curl --fail --show-error http://127.0.0.1:PORT/
+systemctl edit UNIT
+sudo systemctl daemon-reload
 ```
 
 ## References
@@ -569,6 +683,12 @@ systemctl is-enabled UNIT
 
 [20] systemd, *systemctl(1)*: https://www.freedesktop.org/software/systemd/man/latest/systemctl.html
 
+[21] Linux man-pages project, *proc_pid_cmdline(5)*: https://man7.org/linux/man-pages/man5/proc_pid_cmdline.5.html
+
+[22] Linux man-pages project, *ss(8)*: https://man7.org/linux/man-pages/man8/ss.8.html
+
+[23] systemd, *systemd.service(5)* and *systemd.exec(5)*: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html and https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html
+
 ## Review provenance
 
-Technical claims were checked against primary upstream manuals and current Ubuntu Server documentation on 18 July 2026. The course’s open-source inspiration remains attributed separately in `resources/SOURCES.md`. URLs are intentionally written in full so they remain useful in printed and offline copies.
+Technical claims were checked against primary upstream manuals and current Ubuntu Server documentation on 19 July 2026. The course’s open-source inspiration remains attributed separately in `resources/SOURCES.md`. URLs are intentionally written in full so they remain useful in printed and offline copies.

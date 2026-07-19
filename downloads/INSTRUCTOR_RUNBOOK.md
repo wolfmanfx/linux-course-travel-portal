@@ -11,9 +11,12 @@ By the end, first-time Linux operators should be able to enter an unfamiliar Ubu
 - Mixed macOS and Windows host machines
 - No Bash scripting prerequisite
 
-## Six-hour content plan
+## Full course plan
 
-The timing below contains exactly 180 minutes of theory/demos and 180 minutes of participant labs. Add breaks outside these blocks if the venue permits.
+The complete course contains 180 minutes of theory and instructor demonstrations
+plus 210 minutes of participant labs. Labs are interleaved with the theory that
+supports them; there is no separate lab block. The full route is 390
+instructional minutes before breaks.
 
 ### Theory + instructor demos — 180 minutes
 
@@ -27,7 +30,7 @@ The timing below contains exactly 180 minutes of theory/demos and 180 minutes of
 | Logs and `journalctl` filtering | 25 | 155 |
 | systemd and service troubleshooting | 25 | 180 |
 
-### Participant labs — 180 minutes
+### Participant labs — 210 minutes
 
 | Lab | Min | Running total |
 |---|---:|---:|
@@ -39,43 +42,42 @@ The timing below contains exactly 180 minutes of theory/demos and 180 minutes of
 | 6. SSH trust setup | 25 | 135 |
 | 7. Journal investigation | 20 | 155 |
 | 8. Broken-service capstone | 25 | 180 |
+| 9. Process and port investigation | 15 | 195 |
+| 10. systemd drop-in and effective configuration | 15 | 210 |
 
-Optional extension bank—do not include inside the 180-minute block unless
-another activity is removed:
+## Delivery variants
 
-| Lab | Min | Use |
-|---|---:|---|
-| 9. Process and port investigation | 15 | Fast cohort, fourth hour, or post-course practice |
-| 10. systemd drop-in and effective configuration | 15 | Fast cohort, fourth hour, or post-course practice |
+Use the 390-minute route when the booking permits six and a half instructional
+hours. For a strict 360-minute live booking, retain all ten assessed labs and
+move these two activities outside the room:
 
-## Optional wall-clock schedule
+- 15 minutes before class: Lab 1 system orientation.
+- 15 minutes after class: the final synthesis and evidence review.
 
-If breaks and lunch are outside the six instructional hours:
-
-| Time | Activity |
-|---|---|
-| 09:00–10:30 | Theory and demos, part 1 |
-| 10:30–10:45 | Break |
-| 10:45–12:15 | Theory and demos, part 2 |
-| 12:15–13:00 | Lunch |
-| 13:00–14:30 | Labs 1–4 plus Lab 5 start |
-| 14:30–14:45 | Break |
-| 14:45–16:15 | Finish Lab 5, then Labs 6–8 |
-
-If the venue grants only six wall-clock hours, use 15-minute breaks and reduce each half to 165 teaching minutes; keep the participant/theory ratio at 50/50 by removing optional discussion prompts, not lab checkpoints.
+The live 360-minute route then contains 165 minutes of theory/demos and all 210
+minutes of labs, less the 15-minute pre-class activity already completed. Do
+not describe this as a 50/50 split: it is an evidence-led practical course with
+more learner practice than lecture.
 
 ## Room and learner setup
 
 Send the prerequisites at least two business days before the workshop.
 
-Ask learners to verify:
+The primary learner environment is the password-protected browser portal backed
+by one resettable Incus system container per seat. Ask learners to verify before
+class that the supplied URL opens in their current browser and that they can
+type into the ttyd terminal. This path is host-independent on Windows and
+macOS.
+
+Keep Multipass only as the local fallback. Ask learners who will use that
+fallback to verify:
 
 ```text
 multipass version
 ssh -V
 ```
 
-Also ask them to launch the image once before class if network bandwidth is uncertain:
+Ask fallback users to launch the image once before class if network bandwidth is uncertain:
 
 ```text
 multipass launch 24.04 --name linux-course --cpus 2 --memory 2G --disk 10G
@@ -114,11 +116,16 @@ This prevents “copy the magic command” behavior and models operational disci
 
 | Demo | Target | Abort point |
 |---|---:|---|
-| VM boundary and navigation | 8 min | Use prepared terminal transcript |
-| Permission repair | 10 min | Show final `stat` output |
-| SSH key and host verification | 10 min | Use preinstalled key/profile |
-| `journalctl` filtering | 7 min | Show captured unit log |
-| Broken service diagnosis | 10 min | Switch to backup VM |
+| 1. Controller VM versus system container | 5 min | Show the prepared `os-release`, kernel, PID 1, and mount record |
+| 2. Resolve the wrong path under `/var/tmp/demo-tree` | 5 min | Show prepared `pwd`, `namei`, and `realpath` evidence |
+| 3. Reduce a synthetic authentication log | 5 min | Show the saved pipeline and expected aggregate |
+| 4. Trace the installed state and ownership of `jq` | 4 min | Show the prepared APT and `dpkg -S` transcript |
+| 5. Repair `/srv/demo-share` for `demoops` | 6 min | Show final `namei`, `stat`, and two-user access tests |
+| 6. Verify a separate SSH endpoint on port 2207 | 6 min | Use the preinstalled key/profile and verified fingerprint |
+| 7. Explain `course-demo-noisy.service` exit code 17 | 5 min | Show bounded journal evidence containing `STALE_CACHE` |
+| 8. Diagnose the missing environment file for `demo-api.service` | 6 min | Show the effective unit, earliest error, and port 8181 client test |
+| 9. Trace `demo-echo.service` to port 9191 | 5 min | Show saved unit/PID/socket/client evidence |
+| 10. Override `demo-banner.service` with a drop-in | 5 min | Show the effective drop-in and behavioral result |
 
 The demo commands are in `resources/LIVE_DEMOS.md`.
 

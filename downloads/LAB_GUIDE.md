@@ -1,6 +1,6 @@
 # Linux Foundations — Participant Lab Guide
 
-Eight guided incidents · 180 minutes total · Ubuntu 24.04 LTS in the browser
+Ten guided incidents · 210 minutes total · Ubuntu 24.04 LTS in the browser
 
 ## Before you begin
 
@@ -527,13 +527,7 @@ you can reproduce the reasoning.
 
 ---
 
-## Optional extension bank — 30 additional minutes
-
-Labs 1–8 already occupy the complete 180-minute practical block. Labs 9–10 are
-optional 15-minute extensions for a fast cohort, a fourth course hour, or
-post-course practice. Do not silently add them to the six-hour timetable.
-
-## Lab 9 — Process & Port Investigation (optional, 15 min)
+## Lab 9 — Process & Port Investigation (15 min)
 
 ### Mission
 
@@ -576,7 +570,7 @@ killing a PID behind the manager's back.
 
 ---
 
-## Lab 10 — systemd Drop-in & Effective Configuration (optional, 15 min)
+## Lab 10 — systemd Drop-in & Effective Configuration (15 min)
 
 ### Mission
 

@@ -32,7 +32,7 @@ function showSlide(number, updateHash = true) {
     const active = index + 1 === currentSlide;
     button.classList.toggle("active", active);
     button.setAttribute("aria-current", active ? "true" : "false");
-    if (active) button.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    if (active && updateHash) button.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
   });
   if (updateHash) history.replaceState(null, "", `#slide-${currentSlide}`);
 }
@@ -85,14 +85,14 @@ function formatMinutes(seconds) {
 function renderWalkthrough(video) {
   const media = video.ready
     ? `<video controls preload="metadata"><source src="${video.video}" type="video/mp4"><track kind="captions" src="${video.captions}" srclang="en" label="English" default></video>`
-    : `<p><strong>The browser-terminal recording is not packaged yet.</strong> The generated English narration is available.</p><audio controls preload="metadata" src="${video.audio}"></audio>`;
+    : `<p><strong>The matching browser-terminal recording is being regenerated.</strong> It will appear only after video, narration, captions, transcript, and checker evidence pass together.</p>${video.audio ? `<audio controls preload="metadata" src="${video.audio}"></audio>` : ""}`;
   dialogBody.innerHTML = `<article class="dialog-content">
     <p class="eyebrow">Lab ${video.number}</p>
     <h2>${video.title}</h2>
     ${media}
-    <div class="walkthrough-links"><a href="${video.captionsSrt}" download>Download English SRT</a>${video.ready ? `<a href="${video.master}" download>Download English MP4</a>` : ""}</div>
+    ${video.ready ? `<div class="walkthrough-links"><a href="${video.captionsSrt}" download>Download English SRT</a><a href="${video.master}" download>Download English MP4</a></div>` : ""}
     <h3>English transcript</h3>
-    <pre>${escapeHtml(video.transcript)}</pre>
+    <pre>${escapeHtml(video.transcript || "Transcript pending matched regeneration.")}</pre>
   </article>`;
 }
 
@@ -106,8 +106,8 @@ content.videos.forEach(video => {
   const article = document.createElement("article");
   article.className = "video-card";
   article.innerHTML = `
-    <div class="video-cover" data-lab="LAB ${video.number}"><strong>${video.shortTitle}</strong><button class="play-button" type="button" aria-label="Open ${video.title}">${video.ready ? "▶" : "♫"}</button></div>
-    <div class="video-body"><h3>${video.title}</h3><p>${video.description}</p>${video.ready ? "" : `<audio controls preload="none" src="${video.audio}"></audio>`}<span class="status ${video.ready ? "ready" : ""}">${video.ready ? "English video ready" : "English narration ready"}</span></div>`;
+    <div class="video-cover" data-lab="LAB ${video.number}"><strong>${video.shortTitle}</strong><button class="play-button" type="button" aria-label="Open ${video.title}">${video.ready ? "▶" : video.audio ? "♫" : "…"}</button></div>
+    <div class="video-body"><h3>${video.title}</h3><p>${video.description}</p>${!video.ready && video.audio ? `<audio controls preload="none" src="${video.audio}"></audio>` : ""}<span class="status ${video.ready ? "ready" : ""}">${video.ready ? "English video ready" : "Matched regeneration pending"}</span></div>`;
   article.querySelector(".play-button").addEventListener("click", () => openWalkthrough(video));
   videoGrid.append(article);
 });
@@ -123,8 +123,11 @@ if (content.narration.complete && content.narration.fullDeckAudio) {
   document.querySelector("#timingGrid").hidden = true;
   document.querySelector("#narrationHeading").textContent = "Slide narration refresh";
 }
+document.querySelectorAll("[data-requires-narration]").forEach(link => {
+  link.hidden = !content.narration.complete;
+});
 document.querySelector("#declaredTheoryMinutes").textContent = `${timing.declaredTheoryTargetMinutes} min`;
-const explicitTheoryMinutes = timing.explicitSlide1To90ScheduleMinutes ?? timing.explicitSlide1To30ScheduleMinutes;
+const explicitTheoryMinutes = timing.explicitSlideScheduleMinutes ?? timing.explicitSlide1To90ScheduleMinutes ?? timing.explicitSlide1To30ScheduleMinutes;
 document.querySelector("#explicitTheoryMinutes").textContent = `${explicitTheoryMinutes} min`;
 document.querySelector("#spokenNarrationMinutes").textContent = formatMinutes(timing.measuredSpokenAudioSeconds);
 document.querySelector("#plannedLabMinutes").textContent = `${timing.plannedLabMinutes} min`;
@@ -132,7 +135,7 @@ document.querySelector("#timingGapMinutes").textContent = formatMinutes(timing.e
 document.querySelector("#fullDeckDuration").textContent = formatMinutes(timing.fullDeckDurationSeconds);
 document.querySelector("#timingExplanation").textContent = content.narration.complete
   ? timing.explanation
-  : `The 98-slide deck is available now. English narration is being regenerated and has passed for ${content.narration.availableSlides} of ${content.slides.length} slides.`;
+  : `The 100-slide deck is available now. English narration is being regenerated and has passed for ${content.narration.availableSlides} of ${content.slides.length} slides.`;
 const requestedSlide = Number(location.hash.match(/^#slide-(\d+)$/)?.[1] || 1);
 showSlide(requestedSlide, false);
 
