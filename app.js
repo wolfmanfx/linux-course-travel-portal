@@ -126,16 +126,13 @@ if (content.narration.complete && content.narration.fullDeckAudio) {
 document.querySelectorAll("[data-requires-narration]").forEach(link => {
   link.hidden = !content.narration.complete;
 });
-document.querySelector("#declaredTheoryMinutes").textContent = `${timing.declaredTheoryTargetMinutes} min`;
-const explicitTheoryMinutes = timing.explicitSlideScheduleMinutes ?? timing.explicitSlide1To90ScheduleMinutes ?? timing.explicitSlide1To30ScheduleMinutes;
-document.querySelector("#explicitTheoryMinutes").textContent = `${explicitTheoryMinutes} min`;
+document.querySelector("#guidedTeachingPercent").textContent = `${timing.guidedTeachingPercent ?? 50}%`;
+document.querySelector("#handsOnPracticePercent").textContent = `${timing.handsOnPracticePercent ?? 50}%`;
 document.querySelector("#spokenNarrationMinutes").textContent = formatMinutes(timing.measuredSpokenAudioSeconds);
-document.querySelector("#plannedLabMinutes").textContent = `${timing.plannedLabMinutes} min`;
-document.querySelector("#timingGapMinutes").textContent = formatMinutes(timing.explicitScheduleMinusSpokenSeconds);
 document.querySelector("#fullDeckDuration").textContent = formatMinutes(timing.fullDeckDurationSeconds);
 document.querySelector("#timingExplanation").textContent = content.narration.complete
   ? timing.explanation
-  : `The 100-slide deck is available now. English narration is being regenerated and has passed for ${content.narration.availableSlides} of ${content.slides.length} slides.`;
+  : `The ${content.slides.length}-slide deck is available now. English narration is being regenerated.`;
 const requestedSlide = Number(location.hash.match(/^#slide-(\d+)$/)?.[1] || 1);
 showSlide(requestedSlide, false);
 

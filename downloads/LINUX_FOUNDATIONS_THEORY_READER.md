@@ -1,8 +1,8 @@
 # Linux Foundations: A Fact-Checked Theory Reader
 
-**Course companion · English edition · verified 19 July 2026**
+**Course companion · English edition · reverified 21 July 2026**
 
-This reader expands the theory behind the 100-slide Linux Foundations workshop. It is written for learners using an Ubuntu 24.04 classroom VM or Incus system container, while clearly marking behavior that differs by distribution, shell, or local policy. Commands are examples to inspect and discuss; make changes only in the course lab environment.
+This reader expands the theory behind the Linux Foundations workshop. It is written for learners using an Ubuntu 24.04 classroom VM or Incus system container, while clearly marking behavior that differs by distribution, shell, or local policy. Commands are examples to inspect and discuss; make changes only in the course lab environment.
 
 ## How to use this reader
 
@@ -15,6 +15,26 @@ Read Chapters 1–10 in order before the workshop, or use the command index and 
 - **Verify** behavior independently of the tool that made the change.
 
 > **Scope note.** “Linux” describes a kernel and a family of systems, not one identical user experience. This course uses GNU Bash, GNU coreutils, APT, OpenSSH, and systemd on Ubuntu. Rocky/RHEL systems commonly use DNF, may name the SSH unit `sshd.service`, and normally add SELinux policy as another access-control layer.
+
+### Read this before Lab 1: terminal survival
+
+The browser terminal displays a shell session running inside the assigned
+Ubuntu container. A prompt is context, not part of the command: it normally
+indicates an account, a host, and a working directory. The shell reads a command
+name and arguments, applies quoting and expansions, configures redirections,
+starts the requested command, and records its exit status.
+
+Five pieces of syntax appear in the first lab:
+
+- `"$HOME"` expands a variable while preserving the result as one argument.
+- `"$(uname -r)"` runs a command and substitutes its output as one argument.
+- `>` sends standard output to a file and replaces existing content.
+- `printf` formats explicit values predictably; it does not infer labels.
+- `test -d PATH` returns success when the path is a directory. Silence is not
+  the evidence by itself; the exit status is.
+
+These are guided tools, not assumed Bash knowledge. Chapter 3 develops shell
+parsing, streams, pipelines, and exit status in more depth.
 
 ## 1. Linux, distributions, and execution environments
 

@@ -57,7 +57,7 @@ upstream documentation.
 - Shell syntax checks passed for setup, checker, and Incus end-to-end scripts.
 - Browser-platform static checks passed.
 - All ten setup and checker branches pass shell syntax and static contract tests.
-- Labs 9–10 are required; the practical route totals 210 minutes.
+- Labs 9–10 are required; all ten incidents form the hands-on half of the course.
 - End-to-end Incus execution requires the Linux controller host; Incus is not
   installed on the macOS authoring machine. The repository's
   `tests/incus-checkers.sh` remains the authoritative disposable-instance test.

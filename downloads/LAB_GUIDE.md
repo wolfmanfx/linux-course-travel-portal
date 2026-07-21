@@ -1,6 +1,6 @@
 # Linux Foundations — Participant Lab Guide
 
-Ten guided incidents · 210 minutes total · Ubuntu 24.04 LTS in the browser
+Ten guided incidents · hands-on half of the course · Ubuntu 24.04 LTS in the browser
 
 ## Before you begin
 
@@ -28,6 +28,14 @@ command, and the unchanged error output.
 ---
 
 ## Lab 1 — System Orientation (15 min)
+
+### Ready before you begin
+
+You have already seen the prompt, command arguments, quoting, `$HOME`, command
+substitution with `$(...)`, output redirection with `>`, exit status, `test`,
+and the difference between distribution user space and the running kernel.
+`printf` is a guided formatting tool: its first argument is a format and the
+remaining arguments fill each `%s` placeholder.
 
 ### Mission
 
@@ -104,6 +112,14 @@ cat ~/system-profile.txt ~/path-map.txt
 
 ## Lab 2 — Filesystem & Links (25 min)
 
+### Ready before you begin
+
+You can distinguish absolute and relative paths, explain the working directory,
+and predict copy, move, hard-link, and symbolic-link behavior. Guided inspection
+tools used here are `file` for a content-oriented type guess, `realpath` for the
+resolved absolute path, `stat`/`ls -li` for metadata and inode evidence, and
+`find -printf` for an explicit inventory.
+
 ### Mission
 
 Organize the prepared inbox under `~/projects/linux-course`, then demonstrate
@@ -168,6 +184,13 @@ and the symbolic link becomes dangling.
 ---
 
 ## Lab 3 — Editor & Text Evidence (20 min)
+
+### Ready before you begin
+
+You can explain stdin, stdout, stderr, `>`, and a pipe. You have seen the
+pipeline stages used here: `grep` selects records, `awk` extracts or reshapes
+fields, `sort` places equal values together, and `uniq -c` counts adjacent equal
+lines. Nano is guided: `Ctrl+O` saves and `Ctrl+X` exits.
 
 ### Mission
 
@@ -237,6 +260,14 @@ why `sort` must precede `uniq -c`.
 
 ## Lab 4 — Package Lifecycle (20 min)
 
+### Ready before you begin
+
+You can separate repository metadata, the local package index, registered
+installed state, executable discovery, file ownership, and program behavior.
+`apt-cache policy` inspects candidates, `dpkg-query -W` inspects package state,
+`command -v` asks the shell which executable it would run, and `dpkg-query -S`
+asks which package owns a path.
+
 ### Mission
 
 Install `tree` from the configured Ubuntu repositories and connect four pieces
@@ -289,6 +320,14 @@ transaction occurred?
 ---
 
 ## Lab 5 — Permission Incident (30 min)
+
+### Ready before you begin
+
+You can select the owner, matching-group, or other permission class without
+combining them, and explain directory read, write, and search permission.
+`namei -l` exposes every component of a path; `sudo -u USER COMMAND` tests as
+the identity that matters; `sh -c '...'` groups a compound operation under that
+identity. `tee` writes stdin to a privileged target while leaving output visible.
 
 ### Mission
 
@@ -346,6 +385,14 @@ the file group, and the file group mode separately before changing anything.
 ---
 
 ## Lab 6 — SSH Trust Setup (25 min)
+
+### Ready before you begin
+
+You can separate encrypted transport, server host identity, and user identity.
+`ssh-keyscan` only collects the key presented by an endpoint; it does not
+authenticate that key. `ssh-keygen -lf` displays a fingerprint, `ssh -G` shows
+effective client configuration, and `BatchMode=yes` makes authentication fail
+instead of falling back to an interactive password prompt.
 
 ### Mission
 
@@ -422,6 +469,13 @@ Use `ssh -G training-server` to inspect computed client settings and
 
 ## Lab 7 — Journal Investigation (20 min)
 
+### Ready before you begin
+
+You can distinguish summarized unit state from the event sequence that caused
+it. `systemctl show -p ...` selects machine-readable properties. In
+`journalctl`, `-u` selects a unit, `-b` selects a boot, and `--since` bounds the
+time window. Scope first; filter text only after preserving chronology.
+
 ### Mission
 
 Explain why `course-log-generator.service` failed. Preserve the scoped journal
@@ -469,6 +523,15 @@ are systemd's observations of the consequence.
 ---
 
 ## Lab 8 — Broken Service Capstone (25 min)
+
+### Ready before you begin
+
+You can distinguish unit declaration, runtime state, enablement, and behavior.
+You also know that `Requires=`/`Wants=` express activation relationships while
+`After=`/`Before=` express ordering only. `systemctl cat` shows the effective
+unit, `daemon-reload` rereads changed unit definitions, and `restart` creates a
+new execution. This incident changes no unit definition, so no daemon reload is
+needed.
 
 ### Mission
 
@@ -529,6 +592,13 @@ you can reproduce the reasoning.
 
 ## Lab 9 — Process & Port Investigation (15 min)
 
+### Ready before you begin
+
+You can explain a process as a running program with a temporary PID and runtime
+context. `MainPID` connects a managed unit to one process, `ps` and `/proc/PID`
+provide process evidence, `ss -ltnp` shows TCP listeners, and `curl --fail`
+tests client-visible behavior. Stop the process through systemd, its manager.
+
 ### Mission
 
 Identify exactly what owns `localhost:9099`, connect the unit to its PID, user,
@@ -571,6 +641,14 @@ killing a PID behind the manager's back.
 ---
 
 ## Lab 10 — systemd Drop-in & Effective Configuration (15 min)
+
+### Ready before you begin
+
+You can explain fragment and drop-in precedence and the difference between
+reloading manager definitions and restarting a running process. `FragmentPath`,
+`DropInPaths`, and `Environment` expose effective provenance and configuration.
+The generated file is the independent behavior check; the rollback is removal
+of the course drop-in followed by daemon reload and restart.
 
 ### Mission
 

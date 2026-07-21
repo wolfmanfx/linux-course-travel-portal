@@ -11,53 +11,30 @@ By the end, first-time Linux operators should be able to enter an unfamiliar Ubu
 - Mixed macOS and Windows host machines
 - No Bash scripting prerequisite
 
-## Full course plan
+## Course balance
 
-The complete course contains 180 minutes of theory and instructor demonstrations
-plus 210 minutes of participant labs. Labs are interleaved with the theory that
-supports them; there is no separate lab block. The full route is 390
-instructional minutes before breaks.
+The course is deliberately split into two equal halves:
 
-### Theory + instructor demos — 180 minutes
+- **50% guided teaching:** concept models, progressive explanations, worked
+  examples, and distinct instructor demonstrations.
+- **50% hands-on practice:** ten interleaved learner incidents, verification,
+  peer explanation, and debriefs.
 
-| Segment | Min | Running total |
-|---|---:|---:|
-| Welcome, outcomes, environment model | 10 | 10 |
-| Linux, distributions, and architecture | 20 | 30 |
-| Filesystem, terminal, navigation, pipes | 35 | 65 |
-| Users, sudo, permissions, Nano | 35 | 100 |
-| SSH model, keys, client configuration | 30 | 130 |
-| Logs and `journalctl` filtering | 25 | 155 |
-| systemd and service troubleshooting | 25 | 180 |
+There is no separate lecture block followed by a lab block. Every module builds
+knowledge in small steps and then moves directly into its related incident.
 
-### Participant labs — 210 minutes
+## Adapting the room schedule
 
-| Lab | Min | Running total |
-|---|---:|---:|
-| 1. System orientation | 15 | 15 |
-| 2. Filesystem and links | 25 | 40 |
-| 3. Editor and text evidence | 20 | 60 |
-| 4. Package lifecycle | 20 | 80 |
-| 5. Permission incident | 30 | 110 |
-| 6. SSH trust setup | 25 | 135 |
-| 7. Journal investigation | 20 | 155 |
-| 8. Broken-service capstone | 25 | 180 |
-| 9. Process and port investigation | 15 | 195 |
-| 10. systemd drop-in and effective configuration | 15 | 210 |
+Preserve the 50/50 balance. If less time is available, shorten background
+examples, prediction discussions, and optional lab stretches evenly. Keep:
 
-## Delivery variants
+- the prerequisite model before every lab;
+- all ten assessed incidents;
+- verification and recovery steps;
+- the debrief that connects evidence to the model.
 
-Use the 390-minute route when the booking permits six and a half instructional
-hours. For a strict 360-minute live booking, retain all ten assessed labs and
-move these two activities outside the room:
-
-- 15 minutes before class: Lab 1 system orientation.
-- 15 minutes after class: the final synthesis and evidence review.
-
-The live 360-minute route then contains 165 minutes of theory/demos and all 210
-minutes of labs, less the 15-minute pre-class activity already completed. Do
-not describe this as a 50/50 split: it is an evidence-led practical course with
-more learner practice than lecture.
+Individual lab estimates remain in the lab guide as facilitation aids, but do
+not present aggregate minute totals as the course identity.
 
 ## Room and learner setup
 
@@ -102,15 +79,19 @@ Bring:
 
 ## Facilitation pattern
 
-For every command family, use the same rhythm:
+For every module, use the same rhythm:
 
-1. State the job to be done.
-2. Predict what the command should change.
-3. Run it.
-4. Read the output aloud.
-5. Verify the resulting state with a different command.
+1. State the operating question and scope.
+2. Build the minimum concept model.
+3. Read a worked example as evidence flow.
+4. Run a distinct demonstration after asking for a prediction.
+5. Use the readiness slide before releasing learners into the lab.
+6. Debrief declaration, runtime state, events, and behavior without replaying
+   the keystrokes.
 
 This prevents “copy the magic command” behavior and models operational discipline.
+If a readiness item is unclear, revisit the model or worked example; do not
+teach the missing prerequisite reactively inside the assessed lab.
 
 ## Live demo timings
 
@@ -145,13 +126,14 @@ Use a three-color status signal:
 - Amber: working or uncertain
 - Red: blocked
 
-Do not take over a learner keyboard immediately. Ask for these four items:
+Do not take over a learner keyboard immediately. Ask for these five items:
 
 ```bash
 pwd
 whoami
-history | tail -n 10
+hostname
 <the exact failing command repeated once>
+printf 'status=%s\n' "$?"
 ```
 
 For service issues, add:

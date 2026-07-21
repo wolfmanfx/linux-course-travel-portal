@@ -5,9 +5,20 @@ reuse the lab's paths, users, ports, services, values, or failure causes. Use a
 dedicated instructor seat. Run each setup block before presenting and the
 cleanup block after the debrief.
 
-For every demonstration: state the question, ask for a prediction, run one
-command at a time, read the evidence aloud, and verify the conclusion through a
-different interface.
+Every demonstration uses the same visible teaching contract:
+
+1. **Question** — state the system claim being investigated.
+2. **Prediction** — ask which evidence learners expect before typing.
+3. **Observe** — run one command at a time and read its output, not its syntax.
+4. **Interpret** — connect each result to the concept model on the preceding
+   slides; explain unfamiliar helper commands before using them.
+5. **Verify** — close the claim through a different interface.
+6. **Bridge** — name the reasoning pattern that transfers to the learner lab,
+   while withholding the lab's solution sequence.
+
+Use a dedicated instructor seat. If setup evidence differs from this guide,
+stop and reset that seat instead of improvising against a learner incident.
+Demo and lab names, paths, ports, units, and failure causes remain distinct.
 
 ## Demo 1 — Locate the boundary (Module 1, 4 min)
 

@@ -1,36 +1,21 @@
-# Slide narration timing audit
+# Slide narration production audit
 
-Verified 19 July 2026 against `instructor/SPEAKER_SCRIPT.md` and the canonical
-100-slide parser used by the narration pipeline.
+The optional English narration is generated from `instructor/SPEAKER_SCRIPT.md`
+and checked against every slide in the canonical deck.
 
-## Measured source
+## Course balance
 
-- Slides parsed: 100.
-- Spoken words after removing timing metadata, lab-facilitation metadata, and
-  source-claim annotations: 9,232.
-- Explicit theory and distinct-demo schedule in the notes: 180 minutes.
-- Interleaved learner labs: 210 minutes.
-- Full instructional route: 390 minutes before breaks.
+Narration duration is not the course schedule. The workshop is presented as:
 
-## Expected spoken-audio length
+- 50% guided teaching: progressive concept slides, worked examples, and demos.
+- 50% hands-on practice: ten incidents, verification, and debriefs.
 
-| Speaking rate | Estimated continuous speech |
-|---:|---:|
-| 130 words/minute | 71.0 minutes |
-| 150 words/minute | 61.5 minutes |
-| 180 words/minute | 51.3 minutes |
-| 200 words/minute | 46.2 minutes |
+Per-slide and per-lab estimates are private facilitation aids. Do not publish an
+aggregate minute total or compare continuous audio length with classroom time.
 
-The slide audio is intentionally not padded to 180 minutes. The 180-minute
-teaching schedule includes ten distinct live demonstrations, prediction
-questions, terminal typing, reading command output, evidence comparison,
-checkpoint discussion, and transitions. A fast speaker should use the
-two-second command-output pauses and prediction prompts in the runbook; racing
-through the continuous MP3 is not a valid rehearsal of the interactive route.
+## Narration acceptance rule
 
-## Acceptance rule
-
-Do not label the narration complete until all 100 English tracks are generated
-from the final script, every track passes the Whisper ASR and protected-term
-checks, the continuous MP3 duration is measured from the encoded file, and the
-portal contains no audio from the earlier 98-slide deck.
+Do not label narration complete until every English track is generated from the
+current script, passes the protected-term and speech-recognition checks, and the
+continuous audio file is measured from the encoded output. No track from an
+earlier deck version may remain attached to a renumbered slide.
