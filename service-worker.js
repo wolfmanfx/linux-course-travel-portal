@@ -1,4 +1,4 @@
-const CACHE = "linux-foundations-travel-v15";
+const CACHE = "linux-foundations-travel-v16";
 const SHELL = ["./", "index.html", "styles.css", "app.js", "content.js", "manifest.webmanifest", "assets/icon.svg", "assets/slides/slide-1.png"];
 
 self.addEventListener("install", event => event.waitUntil(
@@ -12,8 +12,12 @@ self.addEventListener("activate", event => event.waitUntil(
 ));
 
 function requiresFreshCopy(request) {
-  const filename = new URL(request.url).pathname.split("/").pop();
-  return request.mode === "navigate" || ["index.html", "app.js", "content.js"].includes(filename);
+  const pathname = new URL(request.url).pathname;
+  const filename = pathname.split("/").pop();
+  return request.mode === "navigate"
+    || ["index.html", "styles.css", "app.js", "content.js"].includes(filename)
+    || /\/assets\/slides\/slide-\d+\.png$/.test(pathname)
+    || /\/downloads\/linux-foundations-interleaved-workshop\.(pptx|pdf)$/.test(pathname);
 }
 
 self.addEventListener("fetch", event => {
